@@ -18,11 +18,28 @@ This is the top-level folder that contains two subfolders: **Homeworks** and **L
 This folder contains all the completed homework assignments for the course. Each assignment is provided as:
 - A **PDF document** detailing the problem set and solutions.
 - Any relevant **Python code (.py)** used to solve the problems.
+- Any **LaTeX code (.tex)** used to format and render PDFs.
 
 #### 2. **Labs**
 This folder houses subfolders for each completed lab. The subfolders are named according to the specific lab (e.g., `Lab1`, `Lab2`, etc.). Each lab contains:
 - A **PDF document** summarizing the lab work and results.
 - Corresponding **Python code (.py)** used during the lab sessions.
+- Any **LaTeX code (.tex)** used to format and render PDFs.
+
 
 ---
+
+## How to Use This Repository
+
+1. Navigate to the **Homeworks** folder to find detailed solutions and code for assigned problems.
+2. Visit the **Labs** folder to explore in-depth lab projects, including both documentation and implementation.
+3. Use the files in this repository as a reference for problem-solving techniques, coding methodologies, and course-related insights.
+
+---
+
+## Notes for Prospective Users
+
+This repository is designed to facilitate seamless access to coursework materials and code. Each file is clearly labeled for easy identification. Users are encouraged to browse both homework and lab folders to gain insights into the structured workflow of APPM4600.
+
+If you have any questions or feedback, feel free to reach out!
 
