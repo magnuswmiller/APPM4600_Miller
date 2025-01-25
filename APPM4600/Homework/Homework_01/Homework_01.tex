@@ -1,0 +1,302 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 01}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 01
+\end{center}
+\begin{center}
+    01/24/2025
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Question 1}
+Problem 1 revolves around the following polynomial found in \ref{Eqn_1}. In addition to the equation in \ref{Eqn_1}, we are given an equivalent expression which can be found in \ref{Eqn_2}. The following parts of this question ask to plot \(p(x)\) in different ways and to compare the results.
+\begin{equation}
+    \label{Eqn_1}
+    p(x) = (x-2)^9
+\end{equation}
+\begin{equation}
+    \label{Eqn_2}
+    p(x) = x^9 - 18x^8 + 144x^7 - 672x^6 + 2016x^5 - 4032x^4 + 5376x^3 - 4608x^2 + 2304x - 512
+\end{equation}
+
+\subsection{Plotting using the coefficients}
+Part I asks us to plot \(p(x)\) using the coefficient form of the polynomial found in \ref{Eqn_2} over the interval \([1.920 : 2.080]\). This was accomplished using the \textbf{numpy} library and it's \textit{arange()} function in coordination with the \textbf{matplotlib.pyplot} library. The following figure, \ref{fig:p_coef}, was created.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_01/p_coef.png}
+    \caption{Plotting of \(p(x)\) using the expression in \ref{Eqn_2}.}
+    \label{fig:p_coef}
+\end{figure}
+
+\subsection{Plotting using the expression}
+Part II also asks us to plot \(p(x)\) using the expression form of the polynomial found in \ref{Eqn_1}. As in Part I, the \textbf{numpy} and \textbf{matplotlib} libraries were used. The following figure, \ref{fig:p_expression} was produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_01/p_expression.png}
+    \caption{Plotting of \(p(x)\) using the expression in \ref{Eqn_1}.}
+    \label{fig:p_expression}
+\end{figure}
+\newpage
+
+\subsection{Comparison}
+To better compare the two methods, an overlay of the plots was created using a similar method which can be seen below in \ref{fig:p_comparison}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_01/p_comparison.png}
+    \caption{Plotting of \(p(x)\) using both methods.}
+    \label{fig:p_comparison}
+\end{figure}
+As seen in Figure \ref{fig:p_comparison}, the plot of \(p(x)\) using \ref{Eqn_1} is far smoother than the plot using \ref{Eqn_2}.
+The discrepancy arises due to floating-point round-off errors in evaluating the polynomial via its coefficients. The expression \( (x-2)^9 \) is computationally simpler, involving fewer operations, and hence more accurate. The evaluation using coefficients suffers from catastrophic cancellation, especially near \(x=2\), where \( (x-2) \) approaches zero.
+
+
+\section{Question 2}
+Problem 2 is centered around calculations that are subject to cancellation issues. The problem offers three expressions, and we are tasked with performing the calculations as to avoid cancellation.
+
+\subsection{Part I}
+The calculation for Part I can be found below in \ref{Eqn_3}.
+\begin{equation}
+    \label{Eqn_3}
+    \sqrt{x+1} - 1\mbox{, for x} \simeq \mbox{0}
+\end{equation}
+Considering the equation above, as x approaches 0, the expression approaches \(sqrt{1} -1\) which we know is equal to zero. To absolve this issue, one can multiply the expression by its conjugate as shown below in \ref{Eqn_4}.
+\begin{equation}
+    \label{Eqn_4}
+    (\sqrt{x+1} - 1)*\frac{\sqrt{x+1}+1}{\sqrt{x+1}+1} = \frac{(\sqrt{x+1} - 1)(\sqrt{x+1}+1)}{\sqrt{x+1}+1} = \frac{x}{\sqrt{x+1}+1}
+\end{equation}
+As shown, the final expression includes no subtraction, therefore avoiding the issue of cancellation.
+
+\subsection{Part II}
+The calculation for Part II can be found below in \ref{Eqn_5}.
+\begin{equation}
+    \label{Eqn_5}
+    \sin{x} - \sin{y} \mbox{, for x} \simeq \mbox{y}
+\end{equation}
+To avoid the cancellation in the expression above, one can use a trigonometric substitution using sum identities as seen below in \ref{Eqn_6}.
+\begin{equation}
+    \label{Eqn_6}
+    \sin{x} - \sin{y} = 2\cos{(\frac{x+y}{2})}\sin{(\frac{x+y}{2})}
+\end{equation}
+As shown, the expression includes no subtraction. Since there is no subtraction, the expression avoids the issue of cancellation.
+
+\subsection{Part III}
+The calculation for Part III can be found below in \ref{Eqn_7}.
+\begin{equation}
+    \label{Eqn_7}
+    \frac{1-\cos{x}}{\sin{x}} \mbox{, for x} \simeq \mbox{0}
+\end{equation}
+To avoid the cancellation in the expression above, one can use a trigonometric substitution using half-angle identities as seen below in \ref{Eqn_8}
+\begin{equation}
+    \label{Eqn_8}
+    \frac{1-\cos{x}}{\sin{x}} = \frac{\sin{x}}{1+\cos{x}} = \tan{\frac{x}{2}}
+\end{equation}
+As shown, the expression includes no subtraction. Since there is no subtraction, the expression avoids the issue of cancellation.
+
+
+\section{Question 3}
+Question 3 revolves around the function below in \ref{Eqn_9}. The question asks to find the function's second degree Taylor polynomial to use as an approximation for \(f(0.5)\). The question then begins to inquire about the error in the approximation.
+\begin{equation}
+    \label{Eqn_9}
+    f(x) = 1 + x + x^3)\cos{(x)}, \mbox{ about } x = 0
+\end{equation}
+Given the above equation, we can formulate the second-degree polynomial as shown below in \ref{Eqn_10}.
+\begin{equation}
+    \label{Eqn_10}
+    P_2(x) = f(c) + f'(c)(x-c) + \frac{f''(c)}{2!}(x-c)^2
+\end{equation}
+Since it is centered around \(x=0\), \ref{Eqn_10} becomes the following.
+\[
+P_2(x) = f(0) + f'(0)(x) + \frac{f''(0)}{2!}(x)^2
+\]
+Let us now find the first and second derivative of the function \(f(x)\) about \(x=0\).
+\[
+f(x) = (1 + x + x^3)\cos{(x)}
+\]
+\[
+f'(x) = \left(3x^{2} + 1\right) \cos\left(x\right) - \left(x^{3} + x + 1\right) \sin\left(x\right)
+\]
+\[
+f''(x) = \left(-6x^{2} - 2\right) \sin\left(x\right) + \left(-x^{3} + 5x - 1\right) \cos\left(x\right)
+\]
+When the above expressions are evaluated at \(x=0\), we get the following.
+\[
+f(0) = 1
+\]
+\[
+f'(0) = 1
+\]
+\[
+f''(0) = -1
+\]
+With these values, the second-degree Taylor polynomial now becomes the following in \ref{Eqn_11}.
+\begin{equation}
+    \label{Eqn_11}
+    P_2(x) = 1 + x - \frac{1}{2}x^2
+\end{equation}
+With the second-degree Taylor polynomial for \(f(x)\) centered about \(x=0\), we can continue to the following parts of the question.
+
+\subsection{Approximation of \(f(0.5)\) and the error}
+In Part I we will use \(P_2(x)\) to approximate \(f(0.5)\) as shown below in \ref{Eqn_12}.
+\begin{equation}
+    \label{Eqn_12}
+    f(0.5) \approx P_2(0.5) = 1 + (0.5) - \frac{1}{2}(0.5)
+\end{equation}
+\[
+f(0.5) \approx \frac{3}{2} - \frac{1}{4} = \frac{5}{4}
+\]
+With the approximation, we can now calculate the upper bound for the error of the approximation using the error formula below.
+\[
+|f^{(n+1)}(z)| \leq M \mbox{ where } z \in [a,x]
+\]
+\[
+R_n(0.5) = \frac{M}{6}(0.5)^3
+\]
+Using this and \(a = 0\), \(x = 0.5\), and \(\left(x^{3} - 17x + 1\right) \sin\left(x\right) + \left(3 - 9x^{2}\right) \cos\left(x\right)\), we know \(M =  3\) so \(R_n(0.5) = \frac{1}{16}\). Using a calculator, we calculated the actual value of \(f(0.5)\) to be \(1.624938125\). Therefore the actual error, \(|f(0.5) - P_2(0.5)\), is \(0.374938125\). The actual error is far greater than the theoretical upper bound for the error.
+
+\subsection{Generalizing the error bound}
+Using most of the same formulae from Part I, we can generalize the error bound for \(P_2(x)\) as an approximation of \(f(x)\) is the remainder term of the taylor polynomial as follows in \ref{Eqn_13}.
+\begin{equation}
+    \label{Eqn_13}
+    R_2(x) = \frac{M}{3!}(x)^3 \mbox{ where } M = max|f^{(3)}(z)| \mbox{ where } z \in [0,x]
+\end{equation}
+\subsection{Approximating the integral of \(f(x)\)}
+Part III asks us to approximate the integral \(\int_{0}^{1}f(x)dx\) using the second-degree Taylor polynomial. That is, we want to approximate the integral using \(\int_{0}^{1}P_2(x)dx\) which can be seen below in \ref{Eqn_14}.
+\begin{equation}
+    \label{Eqn_14}
+    \int_{0}^{1}P_2(x)dx = \int_{0}^{1} 1 + x - \frac{1}{2}x^2 dx
+\end{equation}
+\[
+= \int_{0}^{1} 1 dx + \int_{0}^{1} x dx - \int_{0}^{1} \frac{1}{2}x^2 dx
+\]
+\[
+= 1 + \frac{1}{2} - \frac{1}{6}
+\]
+\[
+= \frac{4}{3}
+\]
+\subsection{Estimating the error of the approximation}
+Using Part II, we can calculate the remainder term of the polynomial over the interval \(z \in [0,1]\) as seen below in \ref{Eqn_15}.
+\begin{equation}
+    \label{Eqn_15}
+    R_2(x) = \frac{M}{3!}(x)^3 \mbox{ where } M = max|f^{(3)}(z)| \mbox{ where } z \in [0,1]
+\end{equation}
+\[
+R_2(x) = \frac{15.8638786073}{6}(0.5)^3
+\]
+\[
+R_2(x) = 0.330497471
+\]
+
+
+\section{Question 4}
+Question 3 revolves around the quadratic equation and its roots when given the inputs \(a=1\), \(b=-56\), \(c=1\).
+\subsection{}
+Given the quadratic equation and the above inputs, we can assume that we can calculate the roots to three decimal places as shown below in \ref{Eqn_16}.
+\begin{equation}
+    \label{Eqn_16}
+    r_{1,2} = \frac{-b\pm \sqrt{b^2-4ac}}{2a}
+\end{equation}
+\[
+r_{1,2} = 28 \pm \sqrt{(-56^2)(4)}
+\]
+\[r_1 = 55.982 \mbox{ and } r_2 = 0.018\]
+When using a calculator, we get the following values for the roots: \(r_1 = 55.98213716\) and \(r_2 = 0.01786284073\).
+Now that we have calculated the two roots, we can now calculate the relative roots using as shown below in \ref{Eqn_17}.
+\begin{equation}
+    \label{Eqn_17}
+    \mbox{Relative Error} = \frac{|r_{exact} - r_{computed}|}{r_{exact}}
+\end{equation}
+So calculating the relative error for each root:
+\[
+e_1 = 2.45006723\times10^{-6}
+\]
+\[
+e_2 = 7.678469067\times10^{-6}
+\]
+\subsection{Better methods of approximating roots}
+In this section, we consider the method that can calculate to three decimals that was used in Part I to be the "bad" method. We are also given the following in \ref{Eqn_18}.
+\begin{equation}
+    \label{Eqn_18}
+    (x-r_1)(x-r_2) = 0
+\end{equation}
+Using \ref{Eqn_18}, we get the following.
+\[
+(x-r_1)(x-r_2) = x^2 - xr_1 - xr_2 + r_1r_2
+\]
+When we compare to the quadratic \(ax^2 + bx + c = 0\), we see that \(a = \frac{x^2}{x^2} = 1\), \(b = \frac{-x(r_1+r_2)}{x} = -(r_1+r_2)\), and \(c = r_1r_2\). This gives us the following relations.
+\[
+r_1 + r_2 = \frac{-b}{a}
+\]
+\[
+r_1r_2 = \frac{c}{a}
+\]
+Despite being useful for checking work when finding roots, these relations do not help in finding the roots any more accurately as reconfiguring the equations to solve for either \(r_1\) or \(r_2\) brings you back to the quadratic equation which we have assumed to only be solvable to three decimal places.
+
+
+\section{Question 5}
+
+Question 5 revolves around the idea of cancellation of terms. The question considers computing \(y = x_1 - x_2\) where \~{x}$_1$ \(= x_1 + \Delta x_1\) and \~{x}$_2$\( = x_2 + \Delta x_2\) are approximations to the exact values. It is important to note that if the operation is carried out exactly, we get \~{y}\( = y + (\Delta x_1 + \Delta x_2\) where \(\Delta y = \Delta x_1 + \Delta x_2\). To answer the following parts of this question, python was used.
+\subsection{Absolute and relative errors}
+Given that the absolute error is \(|\Delta y| = |\Delta x_1 - \Delta x_2|\), we know that the bound for the absolute value is \(|\Delta x_1| + |\Delta x_2|\). We also know that the relative error is given by \(\frac{|\Delta y|}{|y|}\). Since we know \(|\Delta y|\) is bounded by \(|\Delta x_1| + |\Delta x_2|\), the bound of the relative error depends on \(|y|\) in the denominator. That is, when \(x_1\) and \(x_2\) are very small, the relative error is very large and when they are very large, the relative error is very small. Using python, I set the smaller set of \(x\)'s to be \(0.005\) and \(0.000999999\) which gave a relative error value of \(4.9999987500003115\times10^{-5}\). When using the large values for \(x_1\) and \(x_2\), (\(1000000.0\) and \(9999999.0\), the relative error was \(2.22222246913583\times10^{-14}\).
+
+\subsection{Avoiding subtraction}
+In Part II, we are given the following expression in \ref{Eqn_19}.
+\begin{equation}
+    \label{Eqn_19}
+    cos(x + \delta) - cos(x)
+\end{equation}
+To manipulate the expression into one without subtraction, we can rewrite the expression using a trigonometric sum identity as shown below.
+\begin{equation}
+    \label{Eqn_20}
+    cos(x + \delta) - cos(x) = -2\sin{\frac{(x + \delta) + x}{2}\sin{\frac{(x + \delta) - x}{2}}}
+\end{equation}
+\[
+= -2\sin{(\frac{2x + \delta}{2})\sin{(\frac{x}{2})}}
+\]
+Using \textbf{python} and the \textbf{numpy} and \textbf{matplotlib} libraries, the difference between the function in \ref{Eqn_19} and the function in \ref{Eqn_20} was plotted which can be seen below in Figures \ref{fig:Diff_pi} and \ref{}. It is important to note that two values of \(x\) were chosen: \(x=\pi\), and \(x=10^6\).
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_01/Diff_pi.png}
+    \caption{Difference of expressions using \(x=\pi\).}
+    \label{fig:Diff_pi}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_01/Diff_10^6.png}
+    \caption{Difference of expressions using \(x=10^6\).}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsection{Taylor series and coming up with my own algorithm}
+For Part III, I wasn’t entirely sure how to approach the problem. The goal was to use the Taylor expansion of \(\cos(x + \delta)\) to approximate \(\cos(x + \delta) - \cos(x)\). I started with the Taylor series:
+\[
+\cos(x + \delta) \approx \cos(x) - \delta \sin(x) - \frac{\delta^2}{2} \cos(x).
+\]
+From this, I could subtract \(\cos(x)\) to get:
+\[
+\cos(x + \delta) - \cos(x) \approx -\delta \sin(x) - \frac{\delta^2}{2} \cos(x).
+\]
+I wasn't the most sure in this path in terms of being able to fully answer the question let alone in being able to produce figures and interpret them accurately.
+
+
+\end{document}
+
