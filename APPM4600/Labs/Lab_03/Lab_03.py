@@ -36,7 +36,7 @@ def driver():
     def dg1(x):
         return 1 - 2*dfun(x);
 
-    (rf1,rf1n)=fixed_point_method(g1,dg1,3.5,3,4,1e-14,100,True);
+    (rf,rfn)=fixed_point_method(g1,dg1,3.5,3,4,1e-14,100,True);
     plt.show();
 
     # Example 2: c = (1/3)
@@ -48,6 +48,23 @@ def driver():
     (rf2,rf2n)=fixed_point_method(g2,dg2,3.5,3,4,1e-14,100,True);
     plt.show();
 
+    # Excersise 1:
+    def fun1(x):
+        return (x**2)*(x-1)
+    def dfun1(x):
+        return x*(3*x-2)
+    
+    # Input A:
+    (rf1,rf1n)=bisect_method(fun1,0.5,2,1e-14,100,True);
+    plt.show();
+
+    # Input B:
+    (rf3,rf3n)=bisect_method(fun1,-1.0,0.5,1e-14,100,True);
+    plt.show();
+
+    # Input C:
+    (rf4,rf4n)=bisect_method(fun1,-1,2,1e-14,100,True);
+    plt.show();
 
 ################################################################################
 # Here we write any functions to be used by driver. They can be in any order we
