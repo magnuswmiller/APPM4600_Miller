@@ -59,18 +59,28 @@ def driver():
         return x*(3*x-2)
     
     # Input A:
-    (rf1,rf1n)=bisect_method(fun1,0.5,2,1e-14,100,True);
-    plt.show();
+    try:
+        print("Exercise 1a:")
+        (rf1,rf1n)=bisect_method(fun1,0.5,2,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
-    '''
     # Input B:
-    (rf3,rf3n)=bisect_method(fun1,-1,0.5,1e-14,100,True);
-    plt.show();
-    '''
+    try:
+        print("Exercise 1b:")
+        (rf12,rf12n)=bisect_method(fun1,-1,0.5,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
     # Input C:
-    (rf4,rf4n)=bisect_method(fun1,-1,2,1e-14,100,True);
-    plt.show();
+    try:
+        print("Exercise 1c:")
+        (rf13,rf13n)=bisect_method(fun1,-1,2,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
     # Exercise 2:
     # A
@@ -78,44 +88,85 @@ def driver():
         return (x-1)*(x-3)*(x-5)
     def dfun2(x):
         return (3*x**2)-(18*x)+23 
+    try:
+        print("Exercise 2a:")
+        (rf2,rf2n)=bisect_method(fun2,0,2.4,1e-5,100,True);
+        plt.show();
+    except:
+        pass
 
     # B
     def fun3(x):
         return (x-1)**2*(x-3)
     def dfun3(x):
         return (x-1)*((3*x)-7)
+    try:
+        print("Exercise 2b:")
+        (rf3,rf3n)=bisect_method(fun3,0,2,1e-5,100,True);
+        plt.show()
+    except:
+        pass
 
     # C
     def fun4(x):
-        return -1
+        return np.sin(x) 
     def dfun4(x):
-        return -1
+        return np.cos(x)
+    try:
+        print("Exercise 2c:")
+        (rf4,rf4n)=bisect_method(fun4,0,0.1,1e-5,100,True);
+        plt.show;
+    except:
+        pass
 
     # Exercise 3:
     # A
     def fun5(x):
-        return -1
+        return x*(1+((7-x**5)/(x**2)))**3
     def dfun5(x):
-        return -1
+        return -(((x**5-x**2-7)**2)*(10*x**5-x**2+35))/x**6
+    try:
+        print("exercise 3a:")
+        (rf5,rf5n)=fixed_point_method(fun5,dfun5,5,0,10,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
     # B
     def fun6(x):
         return -1
     def dfun6(x):
         return -1
+    try:
+        print("exercise 3b:")
+        (rf6,rf6n)=fixed_point_method(fun6,dfun6,5,0,10,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
     # C
     def fun7(x):
         return -1
     def dfun7(x):
         return -1
+    try:
+        print("exercise 3c:")
+        (rf7,rf7n)=fixed_point_method(fun7,dfun7,5,0,10,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
     # D
     def fun8(x):
         return -1
     def dfun8(x):
         return -1
-    
+    try:
+        print("exercise 3d:")
+        (rf8,rf8n)=fixed_point_method(fun8,dfun8,5,0,10,1e-14,100,True);
+        plt.show();
+    except:
+        pass
 
 ################################################################################
 # Here we write any functions to be used by driver. They can be in any order we
