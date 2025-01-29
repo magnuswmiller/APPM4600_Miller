@@ -13,6 +13,7 @@ def driver():
     # First, we define a function we will test our methods with. For each
     # function we define, we also define its derivative.
 
+    '''
     # (1) Bisection method test(s). We run the bisect_method function for a defined
     # fun in interval [a,b] such that f(a)f(b)<0. We run the method until our
     # error estimate (b-a)/2 is smaller than TOL or n is bigger than nmax.
@@ -29,7 +30,9 @@ def driver():
     # find the fixed point of g(x) = x - cf(x) for c a non-zero constant.
     # We run the method until |xn-x_{n-1}| is smaller than TOL
     # or n is bigger than nmax.
+    '''
 
+    '''
     #Example 1: c = 2
     def g1(x):
         return x - 2*fun(x);
@@ -47,6 +50,7 @@ def driver():
 
     (rf2,rf2n)=fixed_point_method(g2,dg2,3.5,3,4,1e-14,100,True);
     plt.show();
+    '''
 
     # Excersise 1:
     def fun1(x):
@@ -58,13 +62,60 @@ def driver():
     (rf1,rf1n)=bisect_method(fun1,0.5,2,1e-14,100,True);
     plt.show();
 
+    '''
     # Input B:
-    (rf3,rf3n)=bisect_method(fun1,-1.0,0.5,1e-14,100,True);
+    (rf3,rf3n)=bisect_method(fun1,-1,0.5,1e-14,100,True);
     plt.show();
+    '''
 
     # Input C:
     (rf4,rf4n)=bisect_method(fun1,-1,2,1e-14,100,True);
     plt.show();
+
+    # Exercise 2:
+    # A
+    def fun2(x):
+        return (x-1)*(x-3)*(x-5)
+    def dfun2(x):
+        return (3*x**2)-(18*x)+23 
+
+    # B
+    def fun3(x):
+        return (x-1)**2*(x-3)
+    def dfun3(x):
+        return (x-1)*((3*x)-7)
+
+    # C
+    def fun4(x):
+        return -1
+    def dfun4(x):
+        return -1
+
+    # Exercise 3:
+    # A
+    def fun5(x):
+        return -1
+    def dfun5(x):
+        return -1
+
+    # B
+    def fun6(x):
+        return -1
+    def dfun6(x):
+        return -1
+
+    # C
+    def fun7(x):
+        return -1
+    def dfun7(x):
+        return -1
+
+    # D
+    def fun8(x):
+        return -1
+    def dfun8(x):
+        return -1
+    
 
 ################################################################################
 # Here we write any functions to be used by driver. They can be in any order we
@@ -87,7 +138,7 @@ def bisect_method(f,a,b,tol,nmax,vrb=False):
     # In this case, the code displays an error message, outputs empty answers and exits.
     if f(a)*f(b)>=0:
         print("\n Interval is inadequate, f(a)*f(b)>=0. Try again \n")
-        print("f(a)*f(b) = %1.1f \n" % f(a)*f(b));
+        #print("f(a)*f(b) = %1.1f \n" % f(a)*f(b));
         r = None;
         return r
     else:
