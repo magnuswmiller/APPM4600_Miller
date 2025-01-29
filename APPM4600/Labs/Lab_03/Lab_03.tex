@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Lab 03}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries LAB \# 03
+\end{center}
+\begin{center}
+    ~01/28/2025~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Introduction}
+This lab revolves around the bisection and fixed point algorithms that are used for root finding.
+
+\section{Pre-Lab}
+There was no formal Pre-Lab for this lab. That being said, I pre-downloaded the sample code file to be used throughout this lab.
+
+\section{Lab day: Exploring the capabilities of the root finding algorithm}
+This lab asks a couple questions to refresh our memory about the algorithms used. For instance, the first question asks what the bisection algorithm method does. In essence, it iterates over points in the function alternating signs as it hones in on the point in the function that intersects the x-axis. The second question asks what is required for the method to run. Based on the sample code, the bisection method requires a function, an interval to search over, a tolerance value, a max number of iterations, and a boolean for whether or not to visualise the output.
+
+
+\section{Exercises}
+\subsection{Question 1}
+Question 1 asks questions about the following equation in \ref{Eqn_01}.
+\begin{equation}
+    f(x) = x^2(x-1)
+\end{equation}
+Using the Desmos graphing calculator, we get the following function in \ref{fig:enter-label}.
+\newpage
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_03/Screenshot 2025-01-28 at 11.37.12 PM.png}
+    \caption{Graph of \(f(x)=x^2(x-1).\)}
+    \label{fig:enter-label}
+\end{figure}
+As shown above, the function only crosses the x-axis (\(y=0\)) at \(x=1\).
+
+\subsubsection{Part (a)}
+Part (a) uses the interval \((a,b) = (0.5,2)\).
+Over the interval \((0.5,2)\), the bisection method works well at locating the root at \(x=1\). This occurs as the root is within the interval and contains both positive and negative values of \(f(x)\).
+
+\subsubsection{Part (b)}
+Part (b) uses the interval \((a,b) = (-1,0.5)\).
+Over the interval \((-1,0.5)\), the bisection method does not work. This is because of the value of \(f(x=0)\). As shown above in \ref{fig:enter-label}, \(f(x=0)=0\) and is negative on either side. This doesn't allow the bisection method algorithm to properly iterate through values in search of the root. It does not consider \(x=0\) to be a root for this reason.
+
+\subsubsection{Part (c)}
+Part (c) uses the interval \((a,b) = (-1,2)\).
+Over the interval \((-1,2)\), the bisection method works well at locating the root at \(x=1\). This occurs as the root is within the interval and contains both positive and negative values of \(f(x)\). Similar to Part (b), however, the root at \(x=0\) is still ignored.
+
+\subsection{Questions 2 \& 3}
+The code was completed for Question 2 Parts (a-c) and for Question 3 Part(a) which is available on GitHub in the \textbf{Lab 03} folder. There was some issues in both the code for Question 2 as well as Question 3 which can easily be fixed later.
+
+\end{document}
