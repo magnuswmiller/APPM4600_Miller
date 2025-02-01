@@ -1,0 +1,322 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 02}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 02
+\end{center}
+\begin{center}
+    ~01/31/25~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Question 1}
+Question 1 is broken down into four parts. Each part offers a function and a Big-O value and we are asked to show that the given function tends towards the Big-O value under a certain set of conditions.
+
+\subsection{}
+For Part 1, we are given the following function, Big-O, and conditions as seen in \ref{Eqn_1}.
+\begin{equation}
+    \label{Eqn_1}
+    (1+x)^n = 1 +nx + o(x) \mbox{ as } x \rightarrow 0
+\end{equation}
+Using the binomial theorem we can expand \(1+x)^n\) as shown below.
+\[
+(x+1)^n = \binom{n}{0} x^0 + \binom{n}{1} x^1 + \binom{n}{2} x^2 + ... + \binom{n}{n} x^n
+\]
+\[
+= 1 + nx + \frac{n(n-1)}{2}x^2+...
+\]
+If we just look at the last listed term above, we notice that they grow larger faster than \(x\). 
+\[
+\lim_{x \to 0}\frac{\frac{n(n-1)}{2}x^2}{x} = \lim_{x \to 0}\frac{n(n-1)}{2}x = 0
+\]
+Therefore, these terms are \(o(x)\) hence making the statement in \ref{Eqn_1} true.
+
+\subsection{}
+For Part 2, we are given the following function, Big-O, and conditions as seen in \ref{Eqn_2}.
+\begin{equation}
+    \label{Eqn_2}
+    f(x) = x\sin{(\sqrt{x})}
+\end{equation}
+Given this function, we need to show the following.
+\[
+f(x) = O(x^{3/2}) \mbox{ as } x \rightarrow 0
+\]
+Using the Maclaurin expansion of \(\sin{(\sqrt{x})}\), we get the following.
+\[
+\sin{(\sqrt{x})} = x^{1/2} - \frac{x^{3/2}}{6} + \frac{x^{5/2}}{120} - ...
+\]
+Substituting this back into the function.
+\[
+x \sin{(\sqrt{x})} = x^{3/2} - \frac{x^{5/2}}{6} + \frac{x^{7/2}}{120} - ...
+\]
+So we now know the values of \(f_1(x)\) and \(f_3(x)\) as shown below.
+\[
+f_1(x) = x^{3/2}
+\]
+\[
+f_3(x) = x^{3/2}-\frac{x^{5/2}}{6}
+\]
+Now using the Taylor Residual Theorem.
+\[
+e(x) = |x\sin{(\sqrt{x})} - x| = |\frac{-\cos{(\epsilon})x^{3/2}}{6}| \mbox{, for } \epsilon \leq x \mbox{ and } 0 \leq n \leq x
+\]
+Since \(\cos{(\epsilon)}\) oscillates between -1 and 1, we know that \(|x\sin{(\sqrt{x})} - x| \leq \frac{x^{3/2}}{6}\). So by taking the limit, we get the following.
+\[
+\lim_{x \to 0}\frac{e(x)}{x^{3/2}} = \lim_{x \to 0}\frac{\frac{x^{3/2}}{6}}{x^{3/2}}
+\]
+\[
+= \frac{1}{6}
+\]
+Since the limit exists, we know that \(e(h) = O(x^{3/2})\). Therefore, we have the following.
+\[
+x \sin{(\sqrt{x})} = O(x^{3/2}) \mbox{, as } x \to 0
+\]
+
+\subsection{}
+For Part 3, we are given the following function, Big-O, and conditions as seen in \ref{Eqn_3}.
+\begin{equation}
+    \label{Eqn_3}
+    e^{-t} = o(\frac{1}{t^2}) \mbox{, as } t \to \infty
+\end{equation}
+Based on the given equation, let the following be true.
+\[
+f(t) = e^{-t}
+\]
+\[
+g(t) = \frac{1}{t^2}
+\]
+Using these functions, we can take the limit at \(t \to \infty\) as shown below.
+\[
+lim_{t \to \infty}\frac{f(t)}{g(t)} = lim_{t \to \infty}\frac{e^{-t}}{\frac{1}{t^2}}
+\]
+\[
+= lim_{t \to \infty}t^2e^{-t}
+\]
+Using L'Hopital's rule, we can do the following.
+\[
+lim_{t \to \infty}\frac{t^2}{e^{t}} = lim_{t \to \infty}\frac{2t}{e^t}
+\]
+\[
+= lim_{t \to \infty}\frac{2}{e^t}
+\]
+And this, we know, goes to zero as \(t \to \infty\). Therefore, we know that the statement in \ref{Eqn_3} is true.
+
+\subsection{}
+For Part 4, we are given the following function, Big-O, and conditions as seen in \ref{Eqn_4}.
+\begin{equation}
+    \label{Eqn_4}
+    \int_{0}^{\epsilon}e^{-x^2}dx = O(\epsilon) \mbox{, as } \epsilon \to 0
+\end{equation}
+To better understand this, let us consider the following.
+\[
+lim_{x \to 0}e^{-x^2} = 1
+\]
+This equality can be better seen in the \ref{fig:Fig_1} below.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_02/Screenshot 2025-01-31 at 3.52.14 PM.png}
+    \caption{Functions \(f(x)=e^{-x^2}\) (blue) and \(g(x) = 1\) (red).}
+    \label{fig:Fig_1}
+\end{figure}
+\newpage
+Since \(f(x) \leq g(x)\), we know the following.
+\[
+\int_{0}^{\epsilon}e^{-x^2}dx \leq \int_{0}^{\epsilon}1dx = \epsilon
+\]
+Since the left-side is less than or equal to the right-side as \(x\) approaches 0, we know that the left-side moves towards the limit faster that the right-side. Therefore we know that the statement in \ref{Eqn_4} is true.
+
+
+\section{Question 2}
+In Question 2, we are given the equation \(\textbf{A}\vec{x}=\vec{b}.\)
+This problem investigates the effect of perturbations \( \Delta b \) on the solution of \( A x = b \) and the numerical effects this has on the condition number. We are given the following definitions.
+\[
+A = \frac{1}{2}
+\begin{bmatrix}
+    1 & 1 \\
+    1 + 10^{-10} & 1 - 10^{-10}
+\end{bmatrix}
+\]
+
+\[
+A^{-1} =
+\begin{bmatrix}
+    1-10^{10}& 10^{10} \\
+    1+10^{10} & -10^{10}
+\end{bmatrix}
+\]
+
+\[
+x =
+\begin{bmatrix}
+    1 \\
+    1
+\end{bmatrix}
+\]
+
+\[
+b =
+\begin{bmatrix}
+    1 \\
+    1
+\end{bmatrix}
+\]
+
+\[
+\Delta b =
+\begin{bmatrix}
+    \Delta b_1 \\
+    \Delta b_2
+\end{bmatrix}
+\]
+
+\subsection{}
+In this part, we are tasked with finding the exact formula for the change in the solution between the exact problem and the perturbed solution. To do this, we can look at the perturbed problem.
+\[
+\textbf{A}(\vec{x}+\Delta\vec{x}) = \vec{b} + \Delta\vec{b}
+\]
+Expanding gives the following.
+\[
+\textbf{A}\vec{x}+\textbf{A}\Delta\vec{x} = \vec{b} + \Delta\vec{b}
+\]
+\[
+\vec{b}+\textbf{A}\vec{x} = \vec{b}+\Delta\vec{x}
+\]
+\[
+\textbf{A}\Delta\vec{x} = \Delta\vec{b}
+\]
+Using \(\textbf{A}^{-1}\), we get the following.
+\[
+\Delta\vec{x} = \textbf{A}^{-1}\Delta\vec{b}
+\]
+\[
+\Delta\vec{x}= \frac{1}{2}\begin{bmatrix}
+    1-10^{10}& 10^{10} \\
+    1+10^{10} & -10^{10}
+\end{bmatrix}
+\begin{bmatrix}
+    \Delta b_1 \\
+    \Delta b_2
+\end{bmatrix}
+\]
+
+\subsection{}
+For the second part of this question,  we are tasked with finding the condition number of the matrix \textbf{A}. We know that the condition number of a matrix is given by the following.
+\[
+\kappa[\textbf{A}] = ||\textbf{A}||\cdot||\textbf{A}^{-1}||
+\]
+\[
+\kappa(\textbf{A}) = (2+\frac{10^{-10}}{2})\cdot(2*10^{10})
+\]
+\[
+\kappa(\textbf{A}) = 2*10^{10}
+\]
+Since the condition number is very large, we know that the matrix \(\textbf{A}\) is ill-conditioned.
+
+\subsection{}
+This section asks about the relative error and perturbation behavior given that \(\Delta\vec{b}_1\) and \(\Delta\vec{b}_2\) have magnitude \(10^{-5}\).
+We know that the relative error of the function is given by the following.
+\[
+\mbox{Relative Error} = \kappa(\textbf{A})\frac{|\Delta\vec{b}|}{|\vec{b}|}
+\]
+\[
+\frac{||\Delta\vec{x}||}{||\vec{x}||} = \kappa(\textbf{A})\frac{||\Delta\vec{b}||}{||\vec{b}||}
+\]
+\[
+\frac{||\Delta\vec{x}||}{||\vec{x}||} = (2*10^{10})(10^{-5})
+\]
+\[
+\frac{||\Delta\vec{x}||}{||\vec{x}||} = (2*10^{5})
+\]
+The relative error is proportional to the condition number and inversely proportional to the perturbation. If the perturbations are the same, the relative error increases. If they are different, the relative error decreases. I feel that perturbations are more likely to be systemic in practice as all elements are affected similarly.
+
+\section{Question 3}
+This question revolves around the function below in  \ref{Eqn_5}. The parts of this question surround the condition number, an associated algorithm and its stability, and its error.
+\begin{equation}
+    \label{Eqn_5}
+    f(x) = e^x-1
+\end{equation}
+\subsection{}
+To find the condition number, we can use the following.
+\[
+\kappa_f(x) = \lim_{\Delta x \to 0}\frac{\frac{|f(x+\Delta x)-f(x)|}{|f(x)|}}{\frac{|\Delta x|}{|x|}}
+\]
+We know that if the function \(f(x)\) is differentiable at \(x\), then the following is true.
+\[
+\kappa_f (x) = |f'(x)|\frac{|x|}{|f(x)|}
+\]
+Plugging in values, we get the following.
+\[
+\kappa_f (x) = |e^x|\frac{|x|}{e^x-1}
+\]
+\[
+\kappa_f (x) = \frac{|xe^x|}{|e^x-1|}
+\]
+As shown, for small values of \(x\), the function is well conditioned. As \(x\) grows larger, the problem grows more ill-conditioned.
+
+\subsection{}
+For this part, we are given the following algorithm for calculating \(f(x)\).
+\begin{enumerate}
+    \item \(y=math.e^x\)
+    \item return \(y-1\)
+\end{enumerate}
+To determine the stability of the algorithm, we have to first calculate its condition number \(\kappa_a\) and compare it to that of the function. We know that the condition number of the algorithm is proportional to the ratio of the relative error of the outputs to the relative error of the input. If you look at the algorithm, for small values of \(x\), the algorithm suffers from cancellation and therefore has large relative error of the output. At larger values of \(x\), this decreases, however. Therefore, the algorithm is considered unstable at smaller values of \(x\).
+
+\subsection{}
+For this part, we will use python to evaluate the algorithm. Using Python, the algorithm output 16 digits of precision. The value output was \(1.000000082740371e-09\). I am not sure exactly how many of these digits are correct, but I know it is at least 11 digits at \(10^{-9}\).
+
+\subsection{}
+To create a polynomial expression that can approximate the value of \(f(x)\) up with 16-digit accuracy, we will use a Taylor Series expansion of the function which can be seen below.
+\[
+f(x) = x + \frac{x^2}{2!}+\frac{x^3}{3!}+...
+\]
+To achieve 16-digit accuracy, we need the remainder to be less than \(10^{-16}\) when \(x=9.999999995000000×10^{-10}\). which gives us the following.
+\[
+f(x) \approx x \mbox{, as } R(x) = 5*10^{-19} \mbox{ when } x = 9.999999995000000×10^{-10}
+\]
+
+\subsection{}
+Using the approximation \(f(x)=x\) and evaluating at \(x=9.999999995000000×10^{-10}\) we find that the result matches the exact value of \(f(x)\) to 16 decimal places. This verifies that the Taylor series approximation is accurate.
+
+\section{Question 4}
+Question 4 requires us to practice our python skills. For this question, the \textit{numpy} and \textit{matplotlib} libraries are being used. The question asks us to write code that evaluates the following sum found below in \ref{Eqn_6}.
+\begin{equation}
+    \label{Eqn_6}
+    S = \sum_{k=1}^{N}\textbf{t}(k)\textbf{y}(k) \mbox{ , where \textbf{t} is a vector of elements} \in [0, \pi] \mbox{ and \textbf{y} is the vector} \cos{(\textbf{t})}
+\end{equation}
+
+\subsection{}
+The code was implemented in python and can be found in the GitHub in the folder \textbf{Homework 02} as \textbf{Homework 02.py}. The sum was found to be \(S=-17.545259710757044\).
+
+\subsection{}
+This part tasks us with using the \textit{matplotlib} library to plot a single parametric curve as well as ten curves. The following plots were produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_02/Single.png}
+    \caption{Plot of single Parametric Curve.}
+    \label{fig:Single}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_02/Multiple.png}
+    \caption{Plot of multiple Parametric Curves.}
+    \label{fig:Multiple}
+\end{figure}
+\end{document}
