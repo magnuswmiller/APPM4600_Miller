@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Lab 04}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\newtheorem{definition}{Definition}
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries LAB \# 04
+\end{center}
+\begin{center}
+    ~02/04/2025~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Introduction}
+This lab focuses on two different techniques for increasing the convergence rate of linearly convergent root finding methods. The techniques explored in lab are \textit{extrapolation} methods. Through this lab, I got practice developing low-level code and investigating order of convergence.
+
+\section{Pre-Lab}
+In order to prepare for this lab, a new fixed point iteration sub-routine was developed. This version of the FPI routine returns a vector whose entries are the approximations of the fixed point at each iteration. This new sub-routine can be found in the GitHub under the \textbf{Lab 04.py} file.
+
+\subsection{Review Order}
+From Homework 3 and class, we are given the following definition outlining order of convergence.
+\begin{definition}
+    Suppose {\(p_n\)}\(_{n=0}^\infty\) is a sequence that converges to \(p\) with \(p_n \neq p\) for all \(n\). If there exists positive constants \(\lambda\) and \(\alpha\) such that
+    \[
+    \lim_{n \to \infty}\frac{|p_{n+1}-p|}{|p_{n}-p|^\alpha} < \lambda
+    \]
+    then {\(p_n\)}\(_{n=1}^\infty\) converges to \(p\) with an order \(\alpha\) and asymptotic error constant \(\lambda\). if \(\alpha = 1\) and \(\lambda \lt 1\) then the sequence converges \textit{linearly}. If \(\alpha = 2\), the sequence is quadratically convergent.
+\end{definition}
+
+\subsection{Exercises}
+\subsubsection{}
+For this question, we are given the fixed point \(p\) and the vector \(\vec{\textbf{p}}\) of approximations made by an iteration and asked to numerically determine the order of convergence of the algorithm that created the algorithm. To numerically solve for \(\alpha\), we can reconfigure the given definition to obtain the following.
+\[
+\alpha \approx \frac{\log|\frac{p_{n+1}-p_n}{p_n-p_{n-1}}|}{\log|\frac{p_n-p_{n-1}}{p_{n-1}-p_{n-2}}|}
+\]
+
+\subsubsection{}
+For this question, we are given a function \(g(x)\) and its fixed point as seen below.
+\[
+g(x) = (\frac{10}{x+4})^{1/2} \mbox{, where } p = 1.3652300134140976
+\]
+For Part (a), we are asked to find the number of iterations it takes to converge to an absolute tolerance of \(10^{-10}\) if \(p_0 = 1.5\). It was found that it took 12 iterations to converge to an absolute tolerance of \(10^{-10}\).
+
+For Part (b), we are asked to find the order of convergence for the given function and parameters. The developed code produced an alpha value of \(\alpha = 1.000000023880272\).
+
+
+\section{Lab Day: Order of Convergence and Low to High Order Approximations}
+During lab, we investigated and explored \textbf{Aitken's \(\Delta^2\) Technique} which is built from a linearly convergent sequence of approximations and \textbf{Steffenson's Method} which is a hybrid of a fixed point iteration and Aitken’s method.
+
+\subsection{Aitken's \(\Delta^2\) Acceleration Technique}
+Aitken's method requires one to begin with a sequence \(\{p_n\}_{n=1}^{\infty}\) that converges linearly to a value \(p\). This sequence is then used to create a new sequence given by the following.
+\[
+\hat{p}_n = p_n - \frac{(p_{n+1}-p_n)^2}{p_{n+2}-2p_{n+1}+p_n}
+\]
+\newtheorem{theorem}{Theorem}
+\begin{theorem}
+    Supppose that \(\{p_n\}_{n=1}^{\infty}\) is a sequence that converges linearly to the limit \(p\) and that
+    \[
+    \lim_{n \to \infty}\frac{p_{n+1}-p_n}{p_n - p} < 1
+    \]
+    then the Aitken's sequence \(\hat{p}_{n=1}^\infty\) converges to \(p\) faster than \(p_{n=1}^\infty\) in the little-o sense. i.e
+    \[
+    \lim_{n \to \infty}\frac{\hat{p}_{n}-p}{p_n - p} =0 
+    \]
+\end{theorem}
+
+\subsection{Exercises: Aitken's Technique}
+\subsubsection{}section{}
+The first question involves the derivation of the aforementioned equation for \(\hat{p}\) explained above. We start with the given equation that describes a sequence \(\{p_n\}_{n=1}^{\infty}\) converging linearly to \( p \):
+\[
+\frac{p_{n+1} - p}{p_n - p} \approx \frac{p_{n+2} - p}{p_{n+1} - p}.
+\]
+Since our goal is to solve for \(p\), we will begin with rewriting the equation:
+\[
+(p_{n+1} - p)(p_{n+1} - p) = (p_n - p)(p_{n+2} - p).
+\]
+\[
+(p_{n+1} - p)^2 = (p_n - p)(p_{n+2} - p).
+\]
+Now we will define \(\Delta p_n\) and \(\Delta ^2p_n\)
+\[
+\Delta p_n = p_{n+1} - p_n, \quad \Delta^2 p_n = p_{n+2} - 2p_{n+1} + p_n.
+\]
+\[
+\hat{p} \approx p_n - \frac{(\Delta p_n)^2}{\Delta^2 p_n}.
+\]
+\[
+\hat{p}_n = p_n - \frac{(p_{n+1} - p_n)^2}{p_{n+2} - 2p_{n+1} + p_n}.
+\]
+This formula accelerates the convergence of a linearly convergent sequence by producing a refined estimate \(\hat{p_n} \) using three consecutive iterates.
+
+\subsubsection{}
+This question asks to write a sub-routine that takes a sequence of approximations, maximum number of iterations, and a tolerance level. The code for this question was completed in part. I have yet to implement the maximum number of iterations and tolerance into this subroutine. This code can be found in the Github repository.
+
+\subsubsection{}
+I was not able to reach this portion of the lab.
+
+\subsection{Steffenson's Method}
+
+\subsection{Exercises: Steffenson's Method}
+I was not able to reach this portion of the lab.
+
+\section{Deliverables}
+The code, \textit{LaTeX} rendering, as well as the \textit{LaTeX} code has been submitted to both canvas as well as the GitHub repository for grading.
+
+\section{Additional Fun}
+I was not able to reach this portion of the lab.
+
+\end{document}

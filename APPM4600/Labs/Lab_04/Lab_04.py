@@ -21,6 +21,7 @@ def driver():
      print('Alpha value: ', alpha[len(alpha)-1])
      aitken = aitkenSeq(approx)
      print(aitken)
+     print(order(aitken))
 
 # define routines
 def fixedpt(f,x0,tol,Nmax):
