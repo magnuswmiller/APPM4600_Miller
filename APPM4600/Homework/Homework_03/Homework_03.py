@@ -117,8 +117,6 @@ def bisection(f,a,b,tol):
     return [astar, ier, count]
 
 def plotting():
-    print("---------- Question 5 Output ----------")
-
     def f(x):
         return x - 4 * np.sin(2 * x) - 3
 
@@ -136,7 +134,6 @@ def plotting():
     plt.grid(True)
 
     plt.show()
-      
 
 driver()               
 
