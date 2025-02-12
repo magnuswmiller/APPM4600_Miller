@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Lab 05}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries LAB \# 05
+\end{center}
+\begin{center}
+    ~02/11/25~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Overview}
+This lab focuses on improving Newton's method as to make it more robust. To complete this lab, there is both a pre-lab section outlined below in addition to the in-lab exercises.
+
+\section{Pre-Lab}
+The pre-lab consists of filling out and completing the following chart. The blank chart was provided on the last page of the lab assignment.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Method: & Input: & Iteration: & Idea: \\
+        \hline
+        Bisection & Function \(f(x)\) & \(d=\frac{a+b}{2}\) & Halves interval containing root \\
+        & Interval \([a,b]\) &  &  \\
+        & Tolerance &  &  \\
+        \hline
+        Fixed Point & Function \(g(x)\) & \(x_{n+1}=g(x_n)\) & Iterates Equation \\
+        & Initial Guess \(x_0\) &  &  \\
+        & Interval \([a,b]\) &  &  \\ 
+        & Tolerance &  &  \\
+        \hline
+        Newton & Function \(f(x)\) & \(x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}\) & Uses tangent to refine guess \\
+        & Derivative \(f'(x)\) &  &  \\
+        & Initial Guess \(x_0\) &  &  \\
+        & Tolerance &  &  \\
+        \hline
+        Secant & Function \(f(x)\) & \(x_{n+1}=x_n-f(x_n)\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}\) & Approximates derivative \\
+        & Initial Guesses \(x_0\), \(x_1\) &  &  \\
+        & Tolerance &  &  \\
+        \hline
+    
+    \end{tabular}
+    \caption{Part I of Table.}
+    \label{tab:RF-Table1}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Method: & Requirements: & Pros: & Cons: \\
+        \hline
+        Bisection & Sign change over \([a,b]\) & Always Converges & Very Slow Comparatively \\
+        &  & Simple implementation &  \\
+        \hline
+        Fixed Point & \(g(x)\) is continuous & Faster & Convergence not guaranteed \\
+        \hline
+        Newton & \(f'(x) \neq 0\) & Quadratic Convergence & Requires Derivative \\
+        & close \(x_0\) &  &  \\
+        \hline
+        Secant & Root must exist over \([a,b]\) & No derivative & May not converge \\
+        \hline
+    \end{tabular}
+    \caption{Part II of Table}
+    \label{tab:RF-Table2}
+\end{table}
+
+\section{Constructing a root finder}
+\subsection{Exercises}
+As shown above in the pre-lab table \ref{tab:RF-Table}, each method has its own set of advantages and disadvantages. As a result, different methods perform better in certain situations compared to others. That being said, this lab focuses on creating a more robust version of Newton's method. The following exercises walks through the process of designing and building this new method.
+
+\subsubsection{Basin of convergence}
+In this part, we are tasked with creating a condition for our implementation of Newton's method which guarantees that the method will converge to a unique root given an initial guess in the neighborhood of the root we are tasked with finding. I used the following condition.
+\[
+|f'(x)| < 1
+\]
+Therefore, the basin of convergence consists of values of \(x\) such that \(-1<f'(x)<1\).
+
+\subsubsection{Implementing a stopping bisection}
+For this part, the bisection sample code provided from class was used and modified. I added a function call to another function that checks if the current midpoint falls in the Newton's method basin of convergence within the bisection method while loop. If it does, it exits the bisection method and switches to the newton method. Otherwise, it continues as normal. The code can be found in the GitHub repository under \textbf{Lab 05.py}.
+
+\subsubsection{Different parameters}
+The original bisection sample code asks for a function \(f(x)\), an interval \([a,b]\), a tolerance, and a max number of iterations. The new version, as shown in the code in the repository, requires the user to pass the derivative \(f'(x)\) as well. The derivative is also passed as a parameter in order to check the basin of convergence condition as well as initiate the Newton's method function when the switch occurs.
+
+\subsubsection{Remaining Questions}
+Due to unforeseen issues while developing the aforementioned code as well as the time constraints of lab, I was not able to finish the exercises in this section.
+
+\subsection{Additional Exercise}
+Due to unforeseen issues while developing the aforementioned code as well as the time constraints of lab, I was not able to finish the exercises in this section.
+
+\section{Deliverables}
+The python code for lab, the code for this LaTeX rendering, as well as the rendering itself can be found in the GitHub repository under \textbf{Lab 05}.
+
+\end{document}
