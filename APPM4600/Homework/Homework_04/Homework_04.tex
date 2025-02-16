@@ -1,0 +1,234 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\newtheorem{definition}{Definition}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 04}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 04
+\end{center}
+\begin{center}
+    ~02/14/25~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Question 1}
+This problem revolves around the idea that underground water mains are subject to freezing depending on the temperature of the soil around it. For this question, we let the temperature of the soil be denoted as \(T(x,t)\), where \(x\) denotes the distance in meters underground, \(t\) is the number of seconds after the cold snap begins. We are told that this function satisfies the following in \ref{Eqn_01}.
+\begin{equation}
+    \label{Eqn_01}
+    \frac{T(x,t)-T_s}{T_i-T_s} = erf(\frac{x}{2 \sqrt{\alpha t}})
+\end{equation}
+In \ref{Eqn_01}, \(T_s\) is the constant temperature in Celsius of the cold snap, \(T_i\) is the initial temperature of the soil in Celsius, and \(\alpha\) is the thermal conductivity of the soil. Additionally, we are given the the function \(erf(t)\) below in \ref{Eqn_02}.
+\begin{equation}
+    \label{Eqn_02}
+    erf(t) = \frac{2}{\sqrt{pi}}\int_0^t\exp{(-s^2)}ds
+\end{equation}
+For the remaining parts, we are to assume that \(T_i = 20\degree \mbox{C}\), \(T_s = -15\degree \mbox{C}\), and \(\alpha = 0.138e-6 \frac{m^2}{s}\).
+
+\subsection{Determining depth}
+We are asked to determine the depth required such that the water main freezes only after \textit{60 days} of exposure to the constant surface temperature \(T_s\). To solve this problem, we must first derive the function \(T(x,t)\) as shown below. Using the \ref{Eqn_01}, we get the following.
+\[
+T(x,t) = T_s + (T_i-T_s)erf(\frac{x}{2\sqrt{\alpha t}})
+\]
+We know that when operating in Celsius, water freezes at \(0\degree \mbox{C}\), so we can set the function equal to \(0\) giving us the following.
+\[
+0 = T_s + (T_i-T_s)erf(\frac{x}{2\sqrt{\alpha t}})
+\]
+We can now isolate the function \(erf(t)\) as shown below.
+\[
+erf(\frac{x}{2\sqrt{\alpha t}}) = \frac{-T_s}{(T_i-T_s)}
+\]
+And by plugging in the given values, we get the following.
+\[
+erf(\frac{x}{2\sqrt{\alpha t}}) = \frac{15\degree\mbox{C}}{35\degree\mbox{C}}
+\]
+\[
+erf(\frac{x}{2\sqrt{\alpha t}}) \approx 0.42857143
+\]
+Using Python and Scipy's \textit{erfinv} function, we can solve the following.
+\[
+erf^{-1}(0.42857143) = \frac{x}{2\sqrt{\alpha t}}
+\]
+With this, we can now solve for x as shown below.
+\[
+x = erf^{-1}(0.42857143)2\sqrt{\alpha t}
+\]
+\[
+x\approx-0.6769618544819365
+\]
+An alternate approach to finding \(x\) can be found by treating the problem as a root finding problem. That is, we are trying to solve \(f(x)=0\). Based on our previous work, let \(f(x)=erf(\frac{x}{2\sqrt{\alpha t}})-0.42857143\). Since we are approaching as a root finding problem, we will need the derivative as shown below.
+\[
+f'(x) = \frac{2}{\sqrt{pi}} e^{-(\frac{x}{2\sqrt{\alpha t}})^2} (\frac{1}{2\sqrt{\alpha t}})
+\]
+\[
+f'(x) = \frac{1}{2\sqrt{\pi\alpha t}}e^{-(\frac{x}{2\sqrt{\alpha t}})^2}
+\]
+Using the above formulas, we are asked to produce a plot of the function \(f(x)\) over the interval \([0,\bar{x}\), where \(\bar{x} > 0\). The following plot was produced seen in \ref{fig:Figure_01}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Homework_04/Figure_1.png}
+    \caption{Plot of \(f(x)\) over \([0,6].\)}
+    \label{fig:Figure_01}
+\end{figure}
+
+\subsection{Approximate depth using bisection}
+For this question, we are asked to compute the approximate depth, \(x\), using the Bisection Method with starting values \(a_0=0m\) and \(b_0=\bar{x}=6m\). Using python and the code provided from class, the optimal depth \(x\) was found to be \(0.6769618544819878\).
+
+\subsection{Approximate depth using Newton's}
+For this question, we are asked to compute the approximate depth, \(x\), using the Newton's Method with starting values \(x_0=0.01m\). Using python and the code provided from class, the optimal depth \(x\) was found to be \(0.6769618544819364\). If the starting value, \(x_0\) was set to be equal to \(\bar{x}=6\), Newton's Method did not converge.
+
+
+\section{Question 2}
+Question 2 revolves around roots and their multiplicities. For this question, we are told to let \(f(x)\) denote a function with root \(\alpha\) of multiplicity \(m\).
+\subsection{Definition of \(\mathbf{\alpha}\)}
+For this part, we are asked to write out a formal mathematical definition of what it means for \(\alpha\) to be a root of multiplicity \(m\) of \(f(x)\) which can be found below.
+\begin{definition}
+    Given a function \(f(x)\) with root \(\alpha\), \(\alpha\) is said to be a root of multiplicity \(m\) of \(f(x)\) if
+    \[
+    f(\alpha) = f'(\alpha) = f''(\alpha) = \dots = f^{(m-1)}(\alpha) = 0
+    \]
+    and if \(f^{(m)}(\alpha)\neq0\). That is to say that \(f(x)\) is of the form \(f(x)=(x-\alpha)^mh(x) \mbox{, where } h(\alpha) \neq 0\).
+\end{definition}
+
+\subsection{Newton's method and \(\mathbf{\alpha}\)}
+This part asks us to show that Newton's Method applied to \(f(x)\) only converges linearly to the root \(\alpha\). To show this, let us first look at the iterative function for Newton's method which is given as the following.
+\[
+x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}
+\]
+Since we know that \(f(x) = (x-\alpha)^mh(x)\) from the definition, we can find \(f'(x)\) as shown below.
+\[
+f'(x) = m(x-\alpha)^{m-1}h(x)+(x-\alpha)^mh'(x)
+\]
+Substituting these into the iterative function, we get the following.
+\[
+x_{n+1}=x_n-\frac{(x_n-\alpha)^mh(x_n)}{m(x_n-\alpha)^{m-1}h(x_n)+(x_n-\alpha)^mh'(x_n)}
+\]
+\[
+x_{n+1}=x_n-\frac{(x_n-\alpha)h(x_n)}{mh(x_n)+(x_n-\alpha)h'(x_n)}
+\]
+\[
+x_{n+1}=x_n-\frac{(x_n-\alpha)h(x_n)}{mh(x_n)+(x_n-\alpha)h'(x_n)}
+\]
+\[
+x_{n+1}=x_n-\frac{(x_n-\alpha)}{m+\frac{(x_n-\alpha)h'(x_n)}{h(x_n)}}
+\]
+\[
+x_{n+1}=x_n-(x_n-\alpha)\frac{1}{m}\frac{1}{1+\frac{(x_n-\alpha)h'(x_n)}{mh(x_n)}}
+\]
+\[
+(x_{n+1}-\alpha) = (x_n-\alpha)-(x_n-\alpha)\frac{1}{m}\frac{1}{1+\frac{(x_n-\alpha)h'(x_n)}{mh(x_n)}}
+\]
+\[
+e_{n+1} = e_n-(x_n-\alpha)\frac{1}{m}\frac{1}{1+\frac{(x_n-\alpha)h'(x_n)}{mh(x_n)}}
+\]
+\[
+e_{n+1} = e_n(1-\frac{1}{m}\frac{1}{1+\frac{(x_n-\alpha)h'(x_n)}{mh(x_n)}})
+\]
+\[
+e_{n+1} = Ce_n
+\]
+Since \(e_n\) is raised to the power of one, we know that Newton's method applied to \(f(x)\) only converges linearly to the root \(\alpha\).
+
+\subsection{Convergence of FPI}
+This part asks us to show that the FPI applied to the function \(g(x) = x - m\frac{f(x)}{f'(x)}\) is second order convergent. To do so, we will first expand the given equation using the formula from the definition as shown below.
+\[
+g(x) = x - m\frac{(x-\alpha)^mh(x)}{m(x-\alpha)^{m-1}h(x)+(x-\alpha)^mh'(x)}
+\]
+From here, we can factor terms out as we did in Part (b) as shown below.
+\[
+g(x) = x - m\frac{(x-\alpha)h(x)}{mh(x)+(x-\alpha)h'(x)}
+\]
+\[
+g(x)-\alpha = x - \alpha - m\frac{(x-\alpha)h(x)}{mh(x)+(x-\alpha)h'(x)}
+\]
+\[
+e_{n+1} = e_n - m\frac{e_nh(x)}{mh(x)+e_nh'(x)}
+\]
+\[
+e_{n+1} = e_n(1 - \frac{mh(x)}{mh(x)+e_nh'(x)})
+\]
+\[
+e_{n+1} \approx e_n\frac{e_nh'(x)}{mh(x)}
+\]
+\[
+e_{n+1} \approx e_n^2\frac{h'(x)}{mh(x)}
+\]
+\[
+e_{n+1} \approx Ce_n^2
+\]
+Since \(e_n\) is raised to a power of 2, we know that FPI for the modified function is second order convergent.
+
+\subsection{Multiplicity \(\mathbf{>1}\)}
+This part asks about Part (c) in relation to Newton's Method with roots of multiplicity \(m>1\). From Part (c), we know that the modified function using FPI converges quadratically to the root \(\alpha\). We also know that the iterative function in Newton's Method is given as \(x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}\). If we modify Newton's method to mirror the equation in Part (c), we get the following.
+\[
+x_{n+1}=x_n-m\frac{f(x_n)}{f'(x_n)}
+\]
+As shown in Part (c), this modification is shown to offer second-order convergence when the root has multiplicity \(m>1\).
+
+\section{Question 3}
+Question 3 revolves around the definition of order of convergence of a sequence and a the relationship between different values.
+\subsection{Deriving a relationship}
+We are told to begin with the definition of the order of convergence of a sequence {\(x_k\)}\(_{k=1}^\infty\) that converges to \(\alpha\) which is given below.
+\begin{definition}
+    Let {\(x_k\)} be a sequence that converges to a number \(\alpha\). Let \(e_k = x_k-\alpha\) for \(k \geq 0\). If there exist positive constants \(\lambda\) and \(q\) such that
+    \[
+    \lim_{n\to\infty}\frac{|x_{n+1}-\alpha|}{|x_k-\alpha|^q}=\lim_{n\to\infty}\frac{|e_{k+1}|}{|e_k|^q} = \lambda
+    \]
+    then {\(x_k\)} is said to converge to \(\alpha\) of order \(q\) with asymptotic error constant \(\lambda\).
+\end{definition}
+From the above definition, we have the following equation.
+\[
+|x_{k+1}-\alpha|=\lambda|x_k-\alpha|^q
+\]
+\[
+\log(|x_{k+1}-\alpha|)=\log(\lambda|x_k-\alpha|^q)
+\]
+\[
+\log(|x_{k+1}-\alpha|)=\log(\lambda)+\log(|x_k-\alpha|^q)
+\]
+\[
+\log(|x_{k+1}-\alpha|)=\log(\lambda)+q\log(|x_k-\alpha|)
+\]
+As shown above, the value of \(q\) denotes the slope of the line when \(\log(|x_{k+1}-\alpha|)\) is plotted versus \(\log(|x_k-\alpha|)\). Thus, the steeper the line, the higher the order of convergence. We know this as a value of \(q=1\) indicates linear convergence while a value \(q = 2\) denotes quadratic convergence.
+
+
+\section{Question 4}
+Question 4 revolves around Newton's Method under the conditions that there exists a root of multiplicity \(m>1\). As shown in Question 2, we know that there is at least one way to improve convergence under these conditions. In addition, one could directly apply Newton's Method to \(g(x) = \frac{f(x)}{f'(x)}\). For this problem, we will consider the following function \(f(x) = e^{3x}-27x^6+27x^4e^x-9x^2e^{2x} \mbox{, where } x\in(3,5)\). To investigate the order of convergence, python was used. I made use of the Newton's method code provided in class as well as the method of calculating the order of convergence from Lab 04.
+
+\subsection{Note}
+I had issues with my code working properly and I did not have time to fix it. The code is in the GitHub repository if you would like to look.
+
+\section{Question 5}
+This question asks us to use Newton's Method as well as the Secant Method to approximate the largest root of \(f(x) = x^6-x-1\). For Newton's method \(x_0=2\) and for the Secant method \(x_0=1\). The actual root was found to be \(\alpha = 0.6769618544819408\).
+\subsection{Error steps}
+The following output was produced for the error at each step.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_04/Screenshot 2025-02-14 at 11.50.11 PM.png}
+    \caption{Error at each step.}
+    \label{fig:Figure_02}
+\end{figure}
+While I may not be sure about the code working properly, the error at each step seems to be working well for Newton's method. Not neccessarily for the Secant Method.
+\subsection{Visualizations}
+As stated above, I had issues with my code for this. Therefore, I was not able to produce an adequate plot for this question.
+
+
+\end{document}
