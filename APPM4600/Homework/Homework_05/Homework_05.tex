@@ -1,0 +1,339 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb, amsthm}
+\newtheorem{theorem}{Theorem}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 05}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 05
+\end{center}
+\begin{center}
+    ~02/21/25~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Question 1}
+Question 1 revolves around a set of non-linear equations. We are asked to consider finding a solution near \((x,y) = (1,1)\) given the following set of equations shown below in \ref{Eqn_01}.
+\begin{equation}
+    \label{Eqn_01}
+    \begin{split}
+        f(x,y) &= 3x^2-y^2 = 0 \\
+        g(x,y) &= 3xy^2-x^3-1=0
+    \end{split}
+\end{equation}
+Throughout the following parts, we will iterate on the system numerically using \textit{python} given an iteration scheme and discuss its methodology. We will also iterate over the same set of equations using \textit{Newton's Method}. Finally, we will identify the numerical result and verify it analytically.
+
+\subsection{Iterating numerically}
+For this part, we are given the following iteration scheme that we will use to iterate on the system numerically.
+\[
+\begin{bmatrix}
+    x_{n+1} \\
+    y_{n+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+    x_n \\
+    y_n
+\end{bmatrix}
+-
+\begin{bmatrix}
+    \frac{1}{6} & \frac{1}{18} \\
+    0 & \frac{1}{6}
+\end{bmatrix}
+\begin{bmatrix}
+    f(x_n,y_n) \\
+    g(x_n,y_n)
+\end{bmatrix}
+\mbox{, } n = 0\mbox{, }1\mbox{, }2 \dots
+\]
+Using the \textit{n}-dimensional \textit{Fixed Point Iteration} code provided from class, the above iteration scheme was implemented. Per the question's request, I used an initial value of \(x_0=\begin{bmatrix}
+    1 \\ 1
+\end{bmatrix}\).
+With this, the FPI based on the schema took 50 iterations to converge to \((x,y) = (0.5,0.8660254)\).
+
+\subsection{Motivation for the matrix choice}
+This part asks about the motivation or reasoning for using the matrix, \(\mathbf{M}\), shown below.
+\[
+\begin{bmatrix}
+\frac{1}{6} & \frac{1}{18} \\
+    0 & \frac{1}{6}
+\end{bmatrix}
+\]
+Using an inverse calculator, I was able to calculate the inverse of the Jacobian, \(J\), which can be found below.
+\[
+\begin{bmatrix}
+    \frac{u}{5x^2+y^2} & \frac{1}{3(5x^2+v^2)} \\
+    -\frac{-x^2+y^2}{2y(5x^2+y^2)} & \frac{x}{y(5x^2+y^2)}
+\end{bmatrix}
+\]
+When you plug in \(x_0 = \begin{bmatrix}
+    1 \\
+    1
+\end{bmatrix}\)
+you get the \(2x2\) matrix \(\mathbf{M}\) shown above.
+
+\subsection{Iterating using Newton's method}
+This part of the question asks us to again use the system of equations in \ref{Eqn_01} and iterate over. This time, however, we are asked to iterate using \textit{Newton's Method}. Similar to before, the \(n\)-dimensional \textit{Newton's Method} code provided from class was used as a base. The code was modified during implementation to account for this problem's parameters. In running the code, Newton's Method took only 11 iterations to converge to \((x,y) = (0.5,0.8660254)\).
+
+\subsection{Exact and analytical solution}
+This part of the question asks us about the exact solution. As shown before, both the \textit{FPI} and \textit{Newton's Method} iterations converged to \((x,y) = (0.5,0.8660254)\). To verify, we will show this result analytically as well as shown below. Rearranging the first equation in \ref{Eqn_01}, we get the following.
+\[
+3x^2 = y^2
+\]
+We can then plug this into the second equation to get the following.
+\[
+3x(3x^2)-x^3-1=0
+\]
+\[
+9x^3-x^3-1=0
+\]
+\[
+8x^3=1
+\]
+The above implies that \(x=(\frac{1}{8})^{1/3} = \frac{1}{2}\). Using this, we can plug this back into the first equation from \ref{Eqn_01} to solve for \(y\) as shown below.
+\[
+3(\frac{1}{2})^2 = y^2
+\]
+\[
+3(\frac{1}{4}) = y^2
+\]
+\[
+\frac{3}{4} = y^2
+\]
+\[
+y = \sqrt{\frac{3}{4}}
+\]
+This implies \(y=0.86602540378\). Therefore, we have that \(x_n=\begin{bmatrix}
+    0.5 \\
+    0.8660254
+\end{bmatrix}\) that was found using the iterations.
+
+\section{Question 2}
+This question is also centered around systems of equations. For this problem, we are asked to consider the following system.
+\[
+\begin{split}
+    x &= \frac{1}{\sqrt{2}}\sqrt{1+(x+y)^2}-\frac{2}{3} \\
+    y &= \frac{1}{\sqrt{2}}\sqrt{1+(x-y)^2}-\frac{2}{3}
+\end{split}
+\]
+With that in mind, we are also given the following theorem (\textit{Theorem 10.6}) from the \(9^{th}\) edition of the textbook.
+
+\begin{theorem}
+    Let $D = \{(x_1, x_2, \dots, x_n)^T : a_i \leq x_i \leq b_i, \quad \forall i = 1, \dots, n\}$ for some collection of constants $a_1, \dots, a_n$ and $b_1, \dots, b_n$. 
+
+    Suppose that $\mathbf{G}: D \subset \mathbb{R}^n \to \mathbb{R}^n$ is a continuous function with the property that $\mathbf{G(x)} \in D$ whenever $\mathbf{x} \in D$. Then $\mathbf{G}$ has a fixed point in $D$.
+
+    Moreover, suppose that all component functions of $\mathbf{G}$ have continuous partial derivatives and that there exists a constant $K \leq 1$ such that 
+    \[
+    \left| \frac{\partial g_i(\mathbf{x})}{\partial x_j} \right| \leq \frac{K}{n}, \quad \forall x \in D, \quad \forall j = 1, \dots, n.
+    \]
+    Then the sequence $\{x^{(k)}\}_{k=0}^{\infty}$, defined by an arbitrarily selected $\mathbf{x}^{(0)} \in D$ and generated by the iteration
+    \[
+    \mathbf{x}^{(k)} = \mathbf{G}(\mathbf{x}^{(k-1)}), \quad \forall k \geq 1,
+    \]
+converges to the unique fixed point $\mathbf{p} \in D$. Furthermore, the error satisfies the bound
+    \[
+    \|\mathbf{x}^{(k)} - \mathbf{p}\|_{\infty} \leq \frac{K^k}{1 - K} \|\mathbf{x}^{(1)} - \mathbf{x}^{(0)}\|_{\infty}.
+    \]
+\end{theorem}
+
+\subsection{Region of guaranteed convergence}
+For this question, we are asked to find a region \(D\) in the \(x,y\)-plane where the fixed point iteration described above is guaranteed to converge to a unique solution for any starting point \((x_0,y_0) \in D\). To do so, we will first define \(\mathbf{G}\) based on the given \textit{FPI} scheme.
+\[
+\begin{split}
+    \mathbf{G}_1(x,y) &= \frac{1}{\sqrt{2}}\sqrt{1+(x+y)^2}-\frac{2}{3} \\
+    \mathbf{G}_2(x,y) &= \frac{1}{\sqrt{2}}\sqrt{1+(x-y)^2}-\frac{2}{3} \\
+    \mathbf{G}(x,y) &= \begin{bmatrix}
+        \mathbf{G}_1(x,y) \\
+        \mathbf{G}_2(x,y)
+    \end{bmatrix}
+\end{split}
+\]
+In the above equations, we know that both \(\mathbf{G}_1(x,y)\) and \(\mathbf{G}_2(x,y)\) are continuous based on looking at their structure. Using that, we can now calculate the Jacobian of \(\mathbf{G}\), \(J_\mathbf{G}\) to show continuous partial derivatives.
+\[
+J_\mathbf{G} = \begin{bmatrix}
+    \frac{\partial \mathbf{G}_1}{\partial x} & \frac{\partial \mathbf{G}_1}{\partial y} \\
+    \frac{\partial \mathbf{G}_2}{\partial x} & \frac{\partial \mathbf{G}_2}{\partial y}
+\end{bmatrix}
+\]
+Using a derivative calculator, the following partial derivatives were obtained.
+\[
+\begin{split}
+    \frac{\partial \mathbf{G}_1}{\partial x} &= \frac{x + y}{2 \sqrt{\left(x + y\right)^{2} + 1}} \\
+    \frac{\partial \mathbf{G}_1}{\partial y} &= \frac{y + x}{2 \sqrt{\left(y + x\right)^{2} + 1}} \\
+    \frac{\partial \mathbf{G}_2}{\partial x} &= \frac{x - y}{2 \sqrt{\left(x - y\right)^{2} + 1}} \\
+    \frac{\partial \mathbf{G}_2}{\partial y} &= \frac{y - x}{2 \sqrt{\left(x - y\right)^{2} + 1}}
+\end{split}
+\]
+Again, we can see by examination that each of the partial derivatives are continuous as none of the denominators are 0, and none of the square roots create complex numbers. Substituting the above, we get the Jacobian of \(\mathbf{G}\), \(J_\mathbf{G}\) shown below.
+\[
+J_\mathbf{G} = \begin{bmatrix}
+    \frac{x + y}{2 \sqrt{\left(x + y\right)^{2} + 1}} & \frac{y + x}{2 \sqrt{\left(y + x\right)^{2} + 1}}\\
+    \frac{x - y}{2 \sqrt{\left(x - y\right)^{2} + 1}} & \frac{y - x}{2 \sqrt{\left(x - y\right)^{2} + 1}}
+\end{bmatrix}
+\]
+Using the Jacobian, we can now write the contraction conditions. The theorem states the following.
+\[
+\begin{vmatrix}
+    \frac{\mathbf{g}_i}{\mathbf{x_j}}
+\end{vmatrix}
+\leq \frac{K}{n}
+\]
+If we consider the \(K \approx 1\), we know the following.
+\[
+\begin{vmatrix}
+    \frac{\mathbf{g}_i}{\mathbf{x_j}}
+\end{vmatrix}
+\leq \frac{K}{n}
+\]
+\[
+\begin{vmatrix}
+    \frac{\mathbf{g}_i}{\mathbf{x_j}}
+\end{vmatrix}
+\leq \frac{1}{n} \mbox{, for all }i,j
+\]
+To solve for the region \(D\), we can simplify the inequality to isolate \(x\) and \(y\) as shown below.
+\[
+\left| \frac{x + y}{2 \sqrt{(x + y)^2 + 1}} \right| \leq \frac{1}{n}
+\]
+\[
+\frac{x + y}{2 \sqrt{(x + y)^2 + 1}} \leq \frac{1}{n}
+\]
+\[
+x + y \leq \frac{2}{n} \sqrt{(x + y)^2 + 1}
+\]
+\[
+(x + y)^2 \leq \frac{4}{n^2} ((x + y)^2 + 1)
+\]
+\[
+(x + y)^2 \leq \frac{4}{n^2} (x + y)^2 + \frac{4}{n^2}
+\]
+\[
+(x + y)^2 - \frac{4}{n^2} (x + y)^2 \leq \frac{4}{n^2}
+\]
+\[
+\left( 1 - \frac{4}{n^2} \right) (x + y)^2 \leq \frac{4}{n^2}
+\]
+\[
+(x + y)^2 \leq \frac{4}{n^2 \left( 1 - \frac{4}{n^2} \right)}
+\]
+\[
+|x + y| \leq \frac{2}{n \sqrt{1 - \frac{4}{n^2}}}
+\]
+It is important to note that the original inequality, the contraction condition from the theorem, needs to be shown to be true for each partial derivative for this to be the case. I took liberties by only showing it for a single partial.
+
+\section{Question 3}
+In this question, we will let \(f(x,y)\) be a smooth function such that \(f(x,y)=0\) defines a smooth curve in the \(x,y\)-plane. If we have an initial position \(\mathbf{x}_0 = (x_0,y_0)\) that resides off of the curve, we are to find a point on the curve that is in the neighborhood of that point. In other words, we are to find a way to move from \(\mathbf{x}_0\) to \(f(x,y)=0\).
+
+\subsection{Deriving the iteration scheme}
+For this part, we are to derive the following iteration scheme from the information above.
+\[
+\Biggl\{
+\begin{split}
+    x_{n+1} = x_n - df_x \\
+    y_{n+1} = y_n - df_y
+\end{split}
+\]
+For this part, we have \(d = \frac{f}{f_x^2+f_y^2}\) and \(f,f_x,f_y\) are evaluated at \((x_n,y_n)\). Since we are traveling from a point off of the curve to a point on the curve, each iterative step should move towards the curve. We know that the gradient of a function \(\nabla f(x,y)\) gives provides a vector that is perpendicular to the curve. This means that the fastest way from \(\mathbf{x}_0\) to a point on the curve lies in the direction of the curves gradient. In other words, the point that we are looking for lies on the line between \(\mathbf{x}_0\) and the function that is on the gradient and satisfies \(f(x,y)=0\). From the gradient, we have the following.
+\[
+\begin{split}
+    f_x(x,y) = \frac{\partial f}{\partial x} \\
+    f_y(x,y) = \frac{\partial f}{\partial y}
+\end{split}
+\]
+With that in mind, we can now look at the iterative shown below.
+\[
+f(x_{n+1},y_{n+1}) = f(x + \Delta x, y + \Delta y)
+\]
+We can use a first-order Taylor expansion to get the following.
+\[
+\begin{split}
+    f(x + \Delta x, y + \Delta y) &= f(x,y)+\frac{f'_x \Delta x}{1!}+\frac{f'_y\Delta y}{1!} \\
+    &= f(x,y) + f'_x \Delta x + f'_y \Delta y
+\end{split}
+\]
+With that, we can now focus on the second condition that \(f(x,y) = 0\). Since we are looking to find the iterative scheme, we will solve for \(\Delta x \mbox{ and } \Delta y\).
+\[
+\begin{split}
+    f(x,y) + f'_x \Delta x + f'_y \Delta y &= 0 \\
+    f'_x \Delta x + f'_y \Delta y &= -f(x,y)
+\end{split}
+\]
+We are given \(d = \frac{f}{f_x^2+f_y^2}\) which we can use as shown.
+\[
+\begin{split}
+    d &= \frac{f}{f_x^2+f_y^2} \\
+    d(f_x^2+f_y^2) &= f \\
+    df_x^2+df_y^2 &= f \\
+    df_xf_x+df_yf_y &= f \\
+    (df_x)f_x+(df_y)f_y &= f
+\end{split}
+\]
+From this, we can see that our step sizes in each direction would then be \(\Delta x = df_x\) and \(\Delta y = df_y\). With these values, we get the iterative scheme outlined above.
+\[
+\begin{split}
+    f(x_{n+1},y_{n+1}) &= f(x,y) + f'_x \Delta x + f'_y \Delta y \\
+    &= f(x,y) +f'_x\frac{f}{f_x^2+f_y^2}+f'_y\frac{f}{f_x^2+f_y^2} \\
+\end{split}
+\]
+
+\subsection{Determining movement}
+This section aims to generalize the conclusion from Part (a) into three dimensions. We are specifically asked to find a point on the ellipsoid \(x^2+4y^2+4z^2 = 16\) when starting from an initial point, \(\mathbf{x}_0\) where \(\mathbf{x}_0=\begin{bmatrix}
+    1 \\
+    1 \\
+    1
+\end{bmatrix}\). From (a), we know we can use the gradient of the function \(\nabla f(x,y,z)\) to find \(d\) in the iteration scheme shown below. Note that this is the same scheme used in (a) but in three dimensions.
+\[
+\begin{split}
+    x_{n+1} = x_n - df_x \\
+    y_{n+1} = y_n - df_y \\
+    z_{n+1} = z_n - df_z
+\end{split}
+\]
+\[
+\begin{split}
+    \nabla f(x,y,z) &= \nabla(x^2+4y^2+4z^2-16) \\
+    &= (\partial f/\partial x, \partial f/\partial y, \partial f/\partial z) \\
+    &= (2x,8y,8z)
+\end{split}
+\]
+We can now use this in our equation for \(d\) as shown below.
+\[
+\begin{split}
+    d &= \frac{f(x,y,z)}{f_x^2+f_y^2+f_z^2} \\
+    &= \frac{f(x,y,z)}{(2x)^2+(8y)^2+(8z^2)} \\
+    &= \frac{f(x,y,z)}{4x^2+64y^2+64z^2}
+\end{split}
+\]
+Using the above iterative scheme, implemented in python based off of the \textit{FPI Method} provided from class, the following output was produced as shown in \ref{Output}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Homework_05/Screenshot 2025-02-21 at 10.39.58 PM.png}
+    \caption{Output of FPI using the prescribed scheme.}
+    \label{fig:Output}
+\end{figure}
+Using python, I also wrote a script to estimate the order of convergence using the following relationship.
+\[
+q = \frac{log\frac{|x_{n+1}-x_n|}{|x_n-x_n-1|}}{log\frac{|x_n-x_{n-1}|}{|x_{n-1}-x_{k-2}|}}
+\]
+Using that code, the order of convergence, \(q\), was estimated to be \(q\approx1.9881233381838672\).
+
+
+\end{document}
