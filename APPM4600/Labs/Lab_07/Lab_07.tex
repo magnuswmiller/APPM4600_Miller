@@ -1,0 +1,137 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Lab 07}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries LAB \# 07
+\end{center}
+\begin{center}
+    ~02/25/25~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Introduction}
+This lab is centered around exploring and building an understanding of simple interpolation techniques. From class, we saw that the polynomial going through the points {\((x_j,f(x_j))\)}\(_{j=0}^n\) where \(f(x) \in C^{(n+1)}[a,b]\) and \(x_j \in [a,b]\) is unique. As said in class, there are many ways of approximating and constructing this polynomial which we will see in this lab. In doing so, we will identify the more stable method as well as discuss the error that arises in each method. Later, we will explore the interpolation error which is given by the polynomial \(\Psi(x) = (x-x_0)\dots(x-x_n)\). We will be exploring this error and investigating node placements and how that effects the error.
+
+\section{Pre-Lab}
+As shown in class, the most naive way of constructing an interpolation polynomial \(f(x) \in C^{(n+1)}[a,b]\) with data {\((x_j,f(x_j))\)}\(_{j=0}^n\) where \(x_j \in [a,b]\) is to write the polynomial in terms of monomials and solve for the coefficients. That is we would write a polynomial of the following form in \ref{Eqn_01} and solve for each coefficient so that it matches our provided data.
+\begin{equation}
+    \label{Eqn_01}
+    p_n(x)=a_0+a_1x+a_2x^2+\dots+a_nx^n
+\end{equation}
+To solve for these coefficients so that the corresponding polynomial passes through our given points \((x_j,f(x_j))\), we can solve the following equation in \ref{Eqn_02}.
+\begin{equation}
+    \label{Eqn_02}
+    \mathbbm{V}\mathbf{\Vec{a}} = \mathbf{\Vec{b}}
+\end{equation}
+In \ref{Eqn_02}, \(\mathbbm{V}\) is the Vandermonde matrix which can be found below. The vectors \(\mathbf{\Vec{b}}\) and \(\mathbf{\Vec{b}}\) are vectors of the coefficients and the monomials respectively as shown below.
+\[
+\mathbbm{V} = \begin{bmatrix}
+1 & x_0 & x_0^2 & \dots & x_0^n \\
+1 & x_1 & x_1^2 & \dots & x_1^n \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_n & x_n^2 & \dots & x_n^n
+\end{bmatrix} \mbox{, }
+\mathbf{\Vec{a}} = \begin{bmatrix}
+    a_0 \\
+    a_1 \\
+    a_2 \\
+    \vdots \\
+    a_n
+\end{bmatrix} \mbox{, and }
+\mathbf{\Vec{b}}=\begin{bmatrix}
+    fix the notation here
+\end{bmatrix}
+\]
+In the following section, we will first develop codes to produce polynomial interpolations using \textit{Monomial Expansion}, \textit{Lagrange Polynomials}, and \textit{Newton-Divided Differences}. After constructing these codes, we will explore their errors. Next, we will build methods that improve these interpolation approximations and we will again explore their errors the same way.
+
+\section{Exploring Interpolation}
+Between class and lab, we have now learned the following techniques for constructing and evaluating interpolation polynomials.
+\begin{enumerate}
+    \item Monomial Expansion
+    \item Lagrange Polynomials
+    \item Newton-Dividend Differences
+\end{enumerate}
+For the remaining sections, we will focus on implementing these techniques to interpolate the function found below in \ref{Eqn_03} on the interval \([-1,1]\).
+\begin{equation}
+    \label{Eqn_03}
+    f(x) = \frac{1}{1+(10x)^2}
+\end{equation}
+The interpolation nodes that will be used are given by \(x_j=-1(j-1)h\) where \(h=\frac{2}{N-1}\) for \(j=0,\dots,N\).
+
+\subsection{Exercises: Different evaluation techniques}
+\subsubsection{}
+For this part, we were tasked with developing codes that can be used for constructing and evaluating the polynomials at the \(1000\) different points on the interval \([-1,1]\) using the three methods outlined above. The codes produced were built using the \textit{lab\_7.py} as a framework. The code produced can be found in the GitHub repository under \textbf{Lab\_07} directory.
+
+\subsubsection{}
+For this section, we were to use a range of nodes. In each of the plots below, there are approximations and their absolute errors when using \(N=2,3,\dots,10\) nodes. The first plot uses \textit{Monomial Expansion}, the second using \textit{Lagrange Polynomials}, and the third using \textbf{Newton-Dividend Differences}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_07/figures/Vlow.png}
+    \caption{Log of the absolute error of interpolation approximation using Monomial Expansion.}
+    \label{fig:Vlow}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_07/figures/Llow.png}
+    \caption{Log of the absolute error of interpolation approximation using Lagrange Polynomials.}
+    \label{fig:Llow}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_07/figures/Nlow.png}
+    \caption{Log of the absolute error of interpolation approximation using Newton-Dividend Differences.}
+    \label{fig:Nlow}
+\end{figure}
+As shown in figures \ref{fig:Vlow}, \ref{fig:Llow}, and \ref{fig:Nlow} the methods behave quite similarly for lower number of nodes. The interpolations using Monomial Expansion and Lagrange Polynomials are almost identical with a maximum absolute error around \(\log_{10}(10^{-6})\) while the Newton-Dividend Differences method was slightly better with a maximum absolute error around \(\log_{10}(10^{-4.5})\).
+
+\subsubsection{}
+The following plots below include approximations and their absolute errors when using \(N=11,12,\dots,19\) nodes. The first plot uses \textit{Monomial Expansion}, the second using \textit{Lagrange Polynomials}, and the third using \textbf{Newton-Dividend Differences}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_07/figures/Vhigh.png}
+    \caption{Log of the absolute error of interpolation approximation using Monomial Expansion.}
+    \label{fig:Vlow}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_07/figures/LHigh.png}
+    \caption{Log of the absolute error of interpolation approximation using Lagrange Polynomials.}
+    \label{fig:Llow}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_07/figures/Nhigh.png}
+    \caption{Log of the absolute error of interpolation approximation using Newton-Dividend Differences.}
+    \label{fig:Nlow}
+\end{figure}
+As shown in figures \ref{fig:Vlow}, \ref{fig:Llow}, and \ref{fig:Nlow} the methods behave quite differently for higher number of nodes. The interpolations using Monomial Expansion and Lagrange Polynomials are similar in their maximum absolute errors which are around \(\log_{10}(10^{-12})\), and \(\log_{10}(10^{-14})\) respectively while the Newton-Dividend Differences method was much better with a maximum absolute error still around \(\log_{10}(10^{-4.5})\).
+
+\subsection{Improving the approximation}
+Due to time constraints and errors in lab, I was not able to reach this section.
+
+\section{Deliverables}
+All code, both \textit{.py} and \textit{.tex}, produced for this lab have been pushed to the GitHub repository under \textbf{Lab 07}. Additionally, this PDF rendering has been submitted through Canvas.
+
+
+\end{document}
