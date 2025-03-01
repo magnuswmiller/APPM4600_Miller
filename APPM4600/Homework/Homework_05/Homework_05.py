@@ -146,10 +146,9 @@ def find_point_on_surface(x0, y0, z0, tol=1e-10, max_iter=50):
         print(f"Iteration {i+1}: x = {x:.10f}, y = {y:.10f}, z = {z:.10f}, f = {f_val:.10e}")
     return approx
 
-import numpy as np
-
 def compute_order_of_convergence(approximations):
     orders = []
+    print(approximations)
     for k in range(2, len(approximations) - 1):
         numerator = np.log(abs((approximations[k+1] - approximations[k]) / (approximations[k] - approximations[k-1])))
         denominator = np.log(abs((approximations[k] - approximations[k-1]) / (approximations[k-1] - approximations[k-2])))
