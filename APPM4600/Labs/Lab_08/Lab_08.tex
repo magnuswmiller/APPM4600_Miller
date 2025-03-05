@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Lab 08}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries LAB \# 08
+\end{center}
+\begin{center}
+    ~03/04/2025~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Introduction}
+This lab revolves around splines which are piecewise approximations. The focus today will be on building and developing our code for creating linear and cubic splines.
+
+\section{Pre-Lab}
+Before lab, we are to write a subroutine that constructs and evaluates a line that goes through the points \((x_0,f(x_0))\) and \((x_1,f(x_1))\) at a point \(\alpha\). The code produced used the following formula.
+\[
+y\_eval = f_0+\frac{(f(x_1)-f(x_0))}{x_1-x_0}(\alpha-x_0)
+\]
+The code that was produced can be found in the \textbf{Lab\_08.py} file in the GitHub repository.
+
+\section{Building Splines}
+For this portion of the lab, we are focused on using the code produced in the Pre-Lab with the sample code provided in the following sections to build our codes for \textit{linear} and \textit{cubic} splines.
+
+\subsection{Constructing piecewise linear approximaitions}
+Using a combination of the code produced for the Pre-Lab, the code provided in the lab assignment, and the code provided on Canvas, I was able to complete the functions \textit{line\_eval()} and \textit{eval\_lin\_spline()} functions where the former is the Pre-Lab helper function which is used in the latter. As said before, the code that was produced can be found in the \textbf{Lab\_08.py} file in the GitHub repository.
+
+\subsection{Exercise 01}
+For this exercise, we are asked to consider the following function.
+\[
+f(x) = \frac{1}{1+(10x)^2}\mbox{, over the interval } [-1,1]
+\]
+This function is the same that was investigated in Lab\_07. Using Desmos, the following plot was produced as reference.
+\newpage
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.68\linewidth]{Lab_08/Screenshot 2025-03-04 at 10.38.53 PM.png}
+    \caption{Plot of \(f(x)\) over the interval \([-1,1]\) using Desmos for reference.}
+    \label{fig:enter-label}
+\end{figure}
+Using the plot above as reference, I was then able to plot the output of the linear spline code with assurance that it was working properly. The following is a plot of the output of the \textit{eval\_lin\_spline()} function that was developed earlier.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.68\linewidth]{Lab_08/Figure_1.png}
+    \caption{Plot of Linear Spline approximation.}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+As you can see, the output closely matches that of the plot produced using Desmos. That being said, we can also investigate the error more closely as shown in the plot below.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.68\linewidth]{Lab_08/Figure_2.png}
+    \caption{Error of Linear Spline approximation.}
+    \label{fig:enter-label}
+\end{figure}
+As you can see above, the maximum absolute error is roughly \(10^{-11}\). When compared to last week's results for the same function, we see that the linear interpolation performs far less accurately compared to the Monomial Expansion, Lagrange Polynomial, and Newton-Dividend Differences methods with lower number of nodes which all had maximum absolute errors that were less that \(10^{-6}\). The linear spline did, however, perform better than last week's method when larger numbers of nodes were used.
+
+\subsection{Constructing cubic splines}
+For this portion of the lab, we are focused on using the code produced in the Pre-Lab with the sample code provided in the following sections to build our code for \textit{cubic} splines. Similar to before, a combination of the Pre-Lab code, the code in the lab assignment, and the code provided on Canvas was used. It is important to note that while progress was made for this section, I was not able to get a working set of helper functions for this section. The code that was produced can be found on the GitHub Repository.
+
+\section{Deliverables}
+All of the python code, latex code, and latex rendering can be found in the GitHub repository in the \textbf{Lab\_08} folder.
+
+\end{document}
