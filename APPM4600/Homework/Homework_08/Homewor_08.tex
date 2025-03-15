@@ -1,0 +1,141 @@
+%%%%%%%%%%%%%%%%%%%% Packages/Formatting Headers %%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 08}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 08
+\end{center}
+\begin{center}
+    ~03/14/2025~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% QUESTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% QUESTION 1 %%%%%%%%%%%%%%%%%%%%
+\section{Question 1}
+For this question, we are asked to consider the following function found below in \ref{Eqn_01}.
+\begin{equation}
+    \label{Eqn_01}
+    f(x) = \frac{1}{1+x^2}
+\end{equation}
+We are asked to then interpolate the function using the following methods on the interval \([-5,5]\) using equispaced nodes.
+\begin{enumerate}
+    \item Lagrange Interpolation
+    \item Hermite Interpolation
+    \item Natural Cubic Splines
+    \item Clamped Cubic Splines
+\end{enumerate}
+Each of the above methods were implemented using python based on example code provided in class as well as from lab, posted notes on Canvas, and online resources. The code that was written for this homework can be found in the GitHub repository under \textbf{Homework\_08}.
+After implementing the different methods, we were asked to examine which method works the best and to investigate or provide intuition as to why.
+\newpage
+\subsection{Lagrange Interpolation}
+When interpolating the function in \ref{Eqn_01} over the interval \([-5,5]\) using equispaced nodes and the \textit{Lagrange Interpolation} method, the following plot was produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Lagrange.png}
+    \caption{Lagrange Interpolation of \(f(x)\) using equispaced nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Lagrange}
+\end{figure}
+As shown above, as the value of \(N\) increases, the accuracy of the interpolation increases. Overall, the interpolation behaves well near \(x=0\) but begins to oscillate as \(|x|\) grows larger. The oscillations are due to Runge's Phenomenon.
+\newpage
+
+\subsection{Hermite Interpolation}
+When interpolating the function in \ref{Eqn_01} over the interval \([-5,5]\) using equispaced nodes and the \textit{Hermite Interpolation} method, the following plot was produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Hermite.png}
+    \caption{Hermite Interpolation of \(f(x)\) using equispaced nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Hermite}
+\end{figure}
+As shown above, the interpolation increases in accuracy as the number of nodes increases. Compared to the Lagrange method, the Hermite method produces far more accurate interpolations for all numbers of nodes. Like the Lagrange method, however, Runge's Phenomenon is still present as \(|x|\) increases.
+\newpage
+
+\subsection{Natural Cubic Splines}
+When interpolating the function in \ref{Eqn_01} over the interval \([-5,5]\) using equispaced nodes and the \textit{Natural Cubic Spline} method, the following plot was produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homework_08/Figures/Nat_Cube.png}
+    \caption{Natural Cubic Spline Interpolation of \(f(x)\) using equispaced nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Nat_Cube}
+\end{figure}
+
+As shown above, the \textit{Natural Cubic Spline} method performed far better than both of the previous methods. This can be attributed to both the accuracy of the interpolation to the function at smaller numbers of nodes as well as the lack of Runge's Phenomenon.
+\newpage
+
+\subsection{Clamped Cubic Splines}
+When interpolating the function in \ref{Eqn_01} over the interval \([-5,5]\) using equispaced nodes and the \textit{Clamped Cubic Spline} method, the following plot was produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Nat_Cube.png}
+    \caption{Natural Cubic Spline Interpolation of \(f(x)\) using equispaced nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Clamp_Cube}
+\end{figure}
+
+As shown above, the \textit{Clamped Cubic Spline} method closely resembles the interpolation of the \textit{Natural Cubic Spline} method. 
+
+\subsection{Conclusions}
+Overall, when interpolating the function in \ref{Eqn_01} using the different methods described above over the interval \([-5,5]\) using \(N=[5,10,15,20]\) nodes, the interpolations varied. Both the Lagrange and Hermite methods produced accurate results for higher values of \(N\) for \(|x|\) near the center of the interval. Both of these methods suffered from Runge's Phenomenon due to the high degree of the polynomials near the ends of the interval. The Cubic spline methods, however, were not subject to this as the methods interpolate smoothly between nodes. In the end, I would say that the Cubic spline methods performed better in interpolating the function, but it is hard to determine the best method of the two for this problem.
+I believe the two Cubic Spline methods performed best due to the fact that the interpolation is not described by a single, unique polynomial. Since both methods involve evaluating a cubic between any two consecutive nodes, there are no higher degree terms which could lead to Runge's Phenomenon.
+
+%%%%%%%%%%%%%%%%%%%% QUESTION 1 %%%%%%%%%%%%%%%%%%%%
+\section{Question 2}
+This question asks us to repeat the same experiment as in Question 1 using the same function, the same interval, and the same numbers of nodes. For this question, however, we are asked to use Chbyshev nodes rather than equispaced nodes. The following plots were produced.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Lagrange_Cheb.png}
+    \caption{Lagrange Interpolation of \(f(x)\) using Chebyshev nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Lagrange_Cheb}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Hermite_Cheb.png}
+    \caption{Hermite Interpolation of \(f(x)\) using Chebyshev nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Hermite_Cheb}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Nat_Cube_Cheb.png}
+    \caption{Natural Cubic Spline Interpolation of \(f(x)\) using Chebyshev nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Nat_Cube_Cheb}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Clamp_Cube_Cheb.png}
+    \caption{Clamped Cubic Spline Interpolation of \(f(x)\) using Chebyshev nodes over the interval \([-5,5]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Clamp_Cube_Cheb}
+\end{figure}
+
+\subsection{Conclusions}
+As shown above, the use of Chebyshev Nodes greatly effects each of the methods in terms of interpolating the function \(f(x) = \frac{1}{1+x^2}\). For the Lagrange and Hermite methods, the use of the Chebyshev Nodes greatly reduced the impact of Runge's Phenomenon for higher values of \(N\). This occurs as the Chebyshev Nodes are more densely located near the ends of the interval compared to equispaced nodes. The use of Chebyshev Nodes, however, did not positively benefit the Cubic Spline methods. I can not tell whether or not this is a byproduct of my implementation or a result caused by the nature of the mathematics. Either way, the Lagrange and Hermite methods are much better suited for the use of ChebyShev Nodes.
+
+
+%%%%%%%%%%%%%%%%%%%% QUESTION 3 %%%%%%%%%%%%%%%%%%%%
+\section{Question 3}
+This question asks us to consider interpolating the function \(f(x)=\sin(10x)\) using the Cubic Spline method on the interval \([0,2\pi]\). Due to the periodicity of the function, a modified version of the Cubic Spline method was used. The modified version of the method required enforcing the endpoint conditions such that the spline is naturally periodic. This was accomplished by requiring that the function values matched at the endpoints, the first derivative of the splines matched at the endpoints, and second derivative of the spline at \(x=0\) is equal to the second derivative of the spline when \(x=2\pi\). That is \(f(0)=f(2\pi\), \(S'(0)=S'(2\pi)\), and \(S''(0)=S''(2\pi)\) were enforced. The following plot was produced using the modified Cubic Spline Method.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Homework_08/Figures/Periodic.png}
+    \caption{Modified Cubic Spline Interpolation of \(f(x)\) using Chebyshev nodes over the interval \([0,2\pi]\) for \(N = [5,10,15,20]\).}
+    \label{fig:Periodic}
+\end{figure}
+
+\end{document}
