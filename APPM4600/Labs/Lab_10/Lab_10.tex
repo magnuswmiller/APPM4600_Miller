@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Lab 10}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries LAB \# 10
+\end{center}
+\begin{center}
+    ~03/18/2025~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%% QUESTIONS %%%%%%%%%%
+\section{Introduction}
+This lab focuses on building and testing out code used to approximate \(L^2\). The code that will be built utilizes the quadrature algorithm that is built into \textit{Scipy}.
+
+\section{Pre-Lab}
+Before lab, we are asked to first consider \textit{Legendre Polynomials}. We are given that these polynomials can be defined by the following three-term recursion.
+\[
+\phi_0 = 1
+\]
+\[
+\phi_1 = x
+\]
+\[
+\phi_{n+1} = \frac{1}{n+1}((2n+1)\phi_n(x) - n\phi_{n-1}(x))
+\]
+In the above recursion, \(n\) is the order of the polynomial and \(x\) is the value at which the polynomial is to be evaluated.
+For pre-lab, we are to implement this recursion in a sub-routine called \textit{eval\_legendre} which takes in the order \(n\) and the value \(x\) at which we are to evaluate the polynomial. This subroutine is to use the above recursion to produce a vector \(\mathbf{\Vec{p}}\) of length \(n+1\) which contains the evaluation of the polynomial at \(x\) for each order \(0 \leq N \leq n\). The code produced can be found in the GitHub repository in the \textit{Lab\_10} directory.
+
+\section{Lab-Day: Building the \(L^2\) Approximations}
+The main focus of today's lab is to produce code that evaluates \(L^2\) approximations of functions. This will first be achieved using the provided code for lab as well as the pre-lab code and later developed using variations of both.
+
+\subsection{Creating the \(L^2\) Approximation}
+From class, we know that the polynomial of degree \(n\), \(p_n(x)\), that approximates a function \(f(x)\) with respect to a weight function \(w(x)\geq0\) on the interval \(I\) is given by the following.
+\[
+p_n(x) = \sum_{j=0}^n a_j \phi_j(x) \mbox{, where } a_j = \frac{\langle \phi_j, f \rangle}{\langle \phi_j, \phi_j \rangle} = \frac{\int_I \phi_j(x)f(x)w(x)dx}{\int_I \phi_j^2(x)w(x)dx}
+\]
+In the above expressions, \(\phi_j(x)\) are a set of polynomials orthogonal on \(I\) with respect to \(w(x)\). This will be used in the following exercises.
+
+\subsection{Exercises}
+\subsubsection{}
+For the first exercise, we are to use the \textit{scipy.integrate} function \textit{quad} and our pre-lab code to create a one line code that evaluates \(a_j\). This is done by writing subroutines to evaluate both the numerator and the denominator in the formula for \(a_j\). The code written for this part can be found on the GitHub repository. 
+
+\subsubsection{}
+For this exercise, we are to combine the code from the previous exercise with the (incomplete) provided code for lab. The provided code asks for us to call our function written for pre-lab in order to evaluate the Legendre Polynomials needed and call our functions from the last question in the lambda functions of the \texttt{eval\_legendre\_expansion} function. The completed code can be found on the GitHub repository.
+
+The completed code produced the following plots. The first figure shows the plots of the function \(f(x) = e^x\) over the interval \([-1,1]\) as well as the Legendre Expansion approximation of the same function. The second figure displays the log error of the approximation.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_10/Figures/Figure_1.png}
+    \caption{Plot of the function \(f(x)=e^x\) and the Legendre Expansion approximation over the interval \([-1,1]\).}
+    \label{fig:legendre}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_10/Figures/Figure_2.png}
+    \caption{Log Error of Legendre Expansion Approximation}
+    \label{fig:legendre_err}
+\end{figure}
+
+\subsubsection{}
+This exercise asks us to know use the same techniques to approximate the function \(f(x) = \frac{1}{(1+x^2)}\). The plots produced can be found below.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_10/Figures/Figure_3.png}
+    \caption{Plot of the function \(f(x)=\frac{1}{(1+x^2)}\) and the Legendre Expansion approximation over the interval \([-1,1]\).}
+    \label{fig:legendre2}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_10/Figures/Figure_4.png}
+    \caption{Log Error of Legendre Expansion Approximation}
+    \label{fig:legendre2_err}
+\end{figure}
+
+\subsection{Additional Exercises}
+The additional exercises ask us to now approximate the same function as \S3.2.3 using new code that approximates \(L^2\) using Chebyshev polynomials. The new three-term recursion is given below.
+\[
+T_0(x) = 1
+\]
+\[
+T_1(x) = x
+\]
+\[
+T_{n+1}=2xT_n(x)-T_{n-1}(x)
+\]
+The new associated weight function is given by \(w(x) = \frac{1}{\sqrt{1-x^2}}\). As before, the code required additional helper functions. The code that was produced can be found in the GitHub repository.
+
+\subsubsection{}
+The code produced the following plots where the first is the plot of the function and its approximation and the second is the log error of the approximation.
+\newpage
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_10/Figures/Figure_5.png}
+    \caption{Plot of the function \(f(x)=\frac{1}{(1+x^2)}\) and the Chebyshev Expansion approximation over the interval \([-1,1]\).}
+    \label{fig:cheb}
+\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Lab_10/Figures/Figure_6.png}
+    \caption{Log Error of Chebyshev Polynomial Expansion Approximation}
+    \label{fig:cheb_err}
+\end{figure}
+
+\section{Deliverables}
+All code, \LaTeX code, and \LaTeX renderings can be found on the GitHub repository under \texttt{Lab\_10}. The rendered PDF has also been submitted to Canvas.
+
+\end{document}
