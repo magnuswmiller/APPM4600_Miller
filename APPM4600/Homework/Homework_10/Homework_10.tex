@@ -1,0 +1,197 @@
+%%%%%%%%%%%%%%%%%%%% Packages/Formatting Headers %%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{soul}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 10}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 10
+\end{center}
+\begin{center}
+    ~04/04/25~
+\end{center}
+ \line(1,0){469.5}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% QUESTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% QUESTION 1 %%%%%%%%%%%%%%%%%%%%
+\section{Question 1}
+For this question, we are given the following function found in (\ref{Eqn_1}) and are asked to determine the Pad\'e of degree 6 under different circumstances. Using the Pad\'e approximations, we are then instructed to compare the accuracy of the results with the sixth order Maclaurin Polynomial over the interval \([0,5]\).
+\begin{equation}
+    \label{Eqn_1}
+    f(x) = \sin{(x)}
+\end{equation}
+
+\subsection{Determining the Maclaurin Polynomial}
+Given the function in (\ref{Eqn_1}), we can find the Maclaurin as follows. We know that the Maclaurin Expansion of \(f(x)=\sin{(x)}\) is given as follows.
+\[
+\begin{split}
+    f(x) &= \sin{(x)} \\
+    &= \sum_{n=0}^\infty \frac{(-1)^nx^{2n+1}}{(2n+1)!}
+\end{split}
+\]
+Since \(\sin{(x)}\) is an odd function, the resulting Maclaurin expansion only provides odd powers of x. Therefore, we can write the sixth degree Maclaurin polynomial as follows.
+\[
+P_6(x) = x - \frac{x^3}{6} + \frac{x^5}{120}
+\]
+Including all of the zero terms, we get the following.
+\[
+\begin{split}
+    f(x) &= c_0+c_1x+c_2x^2+c_3x^3+c_4x^4+c_5x^5+c_6x^6 \\
+    &= 0 + x + 0 - \frac{x^3}{6} + 0 - \frac{x^5}{120} +0
+\end{split}
+\]
+That is, \(c_0,c_2,c_4,c_6 = 0\) and \(c_1 = 1\), \(c_3 = -1/6\), and \(c_5 = 1/120\).
+
+\subsection{Finding the Pad\'e Approximations}
+We know that the Pad\'e approximation , \(R_{[m/n]} = \frac{P_m(x)}{Q_n(x)}\), where \(P_m(x)\) is a polynomial of degree \(m\) and \(Q_n(x)\) is a polynomial of degree \(n\) normalized such that \(Q_n(0) = 1\). Therefore we know that \(P_m(x)\) and \(Q_n(x)\) are of the following forms in (\ref{Eqn_2}) and (\ref{Eqn_3}).
+\begin{equation}
+    \label{Eqn_2}
+    P_m(x) = a_0 + a_1x + a_2x^2 + \dots + a_mx^m
+\end{equation}
+
+\begin{equation}
+    \label{Eqn_3}
+    Q_n(x) = 1 + b_1x + b_2x^2 + \dots + b_nx^n
+\end{equation}
+
+\subsubsection*{1.2.1 [m/n] = [3/3]}
+For this part, we compute the Padé approximation of order $[3/3]$ for $f(x) = \sin(x)$, meaning we seek polynomials $P_3(x)$ and $Q_3(x)$ such that we have the following.
+\[
+R_{[3/3]}(x) = \frac{P_3(x)}{Q_3(x)}
+\]
+For the Padé approximation we want to match the Maclaurin series of $R_{[3/3]}(x)$ with the Maclaurin expansion of $\sin(x)$ up to degree 6. Doing so gives us the following.
+\[
+f(x) \cdot Q_3(x) = P_3(x)
+\]
+Substituting the sixth-degree Maclaurin expansion of $\sin(x)$ and setting \(Q_3(x) = 1 + b_1 x + b_2 x^2 + b_3 x^3\) and \(P_3(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3\), we get the following.
+\[
+\left(x - \frac{x^3}{6} + \frac{x^5}{120}\right)(1 + b_1 x + b_2 x^2 + b_3 x^3)=(a_0 + a_1 x + a_2 x^2 + a_3 x^3)
+\]
+From this, we get a linear system. In order to solve for the polynomials \(P_3(x)\) and \(Q_3(x)\), a python script was written which can be found in the GitHub Repository under \texttt{Homework\_10}. The code produced found that the polynomials were of the following form.
+\[
+P_3(x) = x - 0.11666667x^3
+\]
+\[
+Q_3(x) = 1 + 0.05x^2
+\]
+Using the above, the Pad\'e Approximation was evaluated at \(400\) points over the interval \([0,5]\), and the following plot was produced in \ref{fig:[3/3]_Overlay}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Homework_10/Figures/[3:3]_Overlay.png}
+    \caption{Overlay of Plots of Pad\'e [3/3] Approximation and Maclaurin Polynomial of Degree 6 of Sin(x).}
+    \label{fig:[3/3]_Overlay}
+\end{figure}
+
+\subsubsection*{1.2.2 [m/n] = [2/4]}
+For this part, we are to find the Pad\'e approximation of degree \([2,4]\). This means that we are need to compute and find the polynomials \(P_2(x)\) and \(Q_4(x)\). Using similar techniques as the previous part, the following polynomials were found using the python code found in \texttt{Homework\_10} in the GitHub repository.
+\[
+P_2(x) = x
+\]
+\[
+Q_4(x) = 1 + \frac{x^2}{16} + 0.01944x^4
+\]
+Using the above, the Pad\'e Approximation was evaluated at \(400\) points over the interval \([0,5]\), and the following plot was produced in \ref{fig:[2/4]_Overlay}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Homework_10/Figures/[2:4]_Overlay.png}
+    \caption{Overlay of Plots of Pad\'e [2/4] Approximation and Maclaurin Polynomial of Degree 6 of Sin(x).}
+    \label{fig:[2/4]_Overlay}
+\end{figure}
+
+\subsubsection*{1.2.3 [m/n] = [4/2]}
+For this part, we are to find the Pad\'e approximation of degree \([4,2]\). This means that we are need to compute and find the polynomials \(P_4(x)\) and \(Q_2(x)\). Using similar techniques as the previous part, the following polynomials were found using the python code found in \texttt{Homework\_10} in the GitHub repository.
+\[
+P_4(x) = x - 0.11666667x^3
+\]
+\[
+Q_2(x) = 1 + \frac{x^2}{16} + 0.01944x^4
+\]
+It is important to note that these are the same polynomials found using the \([3/3]\) Pad\'e Approximation. Using the above, the Pad\'e Approximation was evaluated at \(400\) points over the interval \([0,5]\), and the following plot was produced in \ref{fig:[4/2]_Overlay}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Homework_10/Figures/[4:2]_Overlay.png}
+    \caption{Overlay of Plots of Pad\'e [4/2] Approximation and Maclaurin Polynomial of Degree 6 of Sin(x).}
+    \label{fig:[4/2]_Overlay}
+\end{figure}
+
+\subsection{Comparing Results}
+As shown in the above sections, we can see that each of the Pad\'e Approximations perform better than the Maclaurin Polynomial of degree 6 in approximating \(f(x)=\sin{(x)}\) as the values of \(x\) grow. This can be attributed to the fact that the Maclaurin Polynomial is built on the Maclaurin expansion of \(f(x)\) which is centered at zero. We can further compare the accuracy of the different methods by examining their errors. The following plot shows the error for each of the three Pad\'e approximations as well as the Maclaurin Polynomial.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Homework_10/Figures/Error.png}
+    \caption{Error plots of Pad\'e [3/3], Pad\'e [2/4], Pad\'e [4,2], and the Maclaurin Polynomial of degree 6 for \(f(x) = \sin{(x)}.\)}
+    \label{fig:All_Error}
+\end{figure}
+As shown above, each of the Pad\'e approximations far out-perform the Maclaurin polynomial, especially as \(x\) grows within the interval. It is important to note that as \(x\) nears \(5\), the Pad\'e approximation of order \([2,4]\) performs the best of all methods. Additionally, since Pad\'e \([3,3]\) and Pad\'e \([4,2]\) have the same polynomials in the numerator and denominator, the error is the same.
+
+
+%%%%%%%%%%%%%%%%%%%% QUESTION 2 %%%%%%%%%%%%%%%%%%%%
+\section{Question 1}
+For this question, we are asked to find the constants \(x_0\), \(x_1\), and \(c_1\) in \ref{Eqn_4} such that the quadrature formula has the highest degree of precision.
+\begin{equation}
+    \label{Eqn_4}
+    \int_0^1f(x)dx = \frac{1}{2}f(x_0)+c_1f(x_1)
+\end{equation}
+
+\subsection{}
+From \ref{Eqn_4}, we can see that there are three free parameters in the quadrature rule. From this, we know that we are looking for a family of functions with three parameters. That is, we are looking for a polynomial of degree 2. We will define \(f(x)=a_0+a_1x+a_2x^2\). Plugging into the quadrature rule, we get the following.
+\[
+\begin{split}
+    \int_0^1a_0+a_1x+a_2x^2 &= \frac{1}{2}(a_0+a_1x_0+a_2x_0^2)+c_1(a_0+a_1x_1+a_2x_1^2) \\
+    \left(a_0x+\frac{1}{2}a_1x^2+\frac{1}{3}a_2x^3\right)\Bigg|_0^1 &= a_0\left(\frac{1}{2}+c_1\right) + a_1\left(\frac{x_0}{2}+c_1x_1\right) + a_2\left(\frac{x_0^2}{2}+c_1x_1^2\right) \\
+    \left(a_0+\frac{1}{2}a_1+\frac{1}{3}a_2\right) &= a_0\left(\frac{1}{2}+c_1\right) + a_1\left(\frac{x_0}{2}+c_1x_1\right) + a_2\left(\frac{x_0^2}{2}+c_1x_1^2\right) \\
+\end{split}
+\]
+Matching coefficients gives us the following identities.
+\[
+\begin{split}
+    c_1 &= \frac{1}{2} \\
+    x_0 + x_1 &= 1 \\
+    x_0^2 + x_1^2 &= \frac{2}{3}
+\end{split}
+\]
+If we set \(x_1=1-x_0\), we can then plug into the third identity giving us the following.
+\[
+\begin{split}
+    x_0^2 + (1-x_0)^2 - \frac{2}{3} &= 0 \\
+    x_0^2 + 1 - 2x_0 + x_0^2 - \frac{2}{3} &= 0 \\
+    2x_0^2 - 2x_0 + \frac{1}{3} &= 0 \\
+    6x_0^2 - 6x_0 + 1 &= 0 \\
+\end{split}
+\]
+Using the quadratic equation, we get the following.
+\[
+\begin{split}
+    x_0 &= \frac{-b\pm \sqrt{b^2-4ac}}{2a} \\
+    x_0 &= \frac{-(-6)\pm \sqrt{(-6)^2-4(6)(1)}}{2(6)} \\
+    x_0 &= \frac{6\pm \sqrt{(36-24)}}{12} \\
+    x_0 &= \frac{6\pm \sqrt{12}}{12} \\
+    x_0 &= \frac{6\pm 2\sqrt{3}}{12} \\
+    x_0 &= \frac{3\pm \sqrt{3}}{6} \\
+\end{split}
+\]
+Since \(x_0 = \frac{3\pm \sqrt{3}}{6}\), we know that \(x_1 = \frac{3\mp \sqrt{3}}{6}\). Therefore, the constants that provide the highest degree of precision are as follows.
+\[
+x_0 = \frac{3\pm \sqrt{3}}{6}\mbox{, } x_1 = \frac{3\mp \sqrt{3}}{6}\mbox{, and } c_1 = \frac{1}{2}
+\]
+
+
+\end{document}
