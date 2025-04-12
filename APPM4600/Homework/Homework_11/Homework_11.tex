@@ -1,0 +1,165 @@
+%%%%%%%%%%%%%%%%%%%% Packages/Formatting Headers %%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in,left=1.5in,includefoot]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Header & Footer Stuff %%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Magnus Miller}
+\rhead{MATH 4600} 
+\chead{\textbf{Homwork 01}}
+\lfoot{\fontsize{10pt}{12pt}\selectfont Dept. of Applied Mathematics}
+\rfoot{\fontsize{10pt}{12pt}\selectfont University of Colorado Boulder}
+\cfoot{\fontsize{10pt}{12pt}\selectfont Page \thepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% The Main Document %%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+ \LARGE\bfseries HOMEWORK \# 11
+\end{center}
+\begin{center}
+    ~04/12/2025~
+\end{center}
+ \line(1,0){430}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% QUESTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% QUESTION 1 %%%%%%%%%%%%%%%%%%%%
+\section{Question 1}
+This question revolves around approximating the following function in (\ref{Eqn_1}).
+\begin{equation}
+    \label{Eqn_1}
+    \int_{-5}^5\frac{1}{1+s^2}ds
+\end{equation}
+We will first approximate the function using a \textit{Composite Trapezoidal Rule} and a \textit{Composite Simpsons Rule}. We will then use methods derived in class to select \(n\) such that certain error methods are met. Finally, we will approximate using the developed codes and the predicted value of \(n\) and compare to the output of the \texttt{Scipy} quadrature function.
+
+\subsection{Writing Composite Codes}
+For this part, we are asked to write code to approximate the integral in (\ref{Eqn_1}) using a \textit{Composite Trapezoidal Rule} and a \textit{Composite Simpson's Rule}. For the first approximation, we are instructed to do this by partitioning the interval \([-5,5]\) into equally spaced points \(t_0, t_1,t_2,\dots, t_n\). For the second approximation using a \textit{Composite Simpson's Rule}, we are instructed to do this by again partitioning the interval \([-5,5]\) into equally spaced points  \(t_0, t_1,t_2,\dots, t_n\) where \(n=2k\) is even. The code that was produced for both approximation methods can be found on the GitHub repository under \texttt{Homework\_11}.
+
+\subsection{Using Error Estimates to Choose \(n\)}
+We know the following error estimate for the \textit{Trapezoidal Rule} in (\ref{Eqn_2}) and the error estimate for the \textit{Simpson's Rule} in (\ref{Eqn_3}) where \(|E|\) represents the absolute error.
+\begin{equation}
+    \label{Eqn_2}
+    |E| \leq \frac{(b-a)^3}{12n^2}[\max|f''(x)|]
+\end{equation}
+\begin{equation}
+    \label{Eqn_3}
+    |E| \leq \frac{(b-a)^5}{180n^4}[\max|f^{(4)}(x)|]
+\end{equation}
+Using the above error estimates, we are to find the values of \(n\) such that \(|E|  \leq 10^{-4}\). In the case of the \textit{Composite Trapezoidal Rule}, we have the following for \(|E|\).
+\[
+|E| = \Bigg|\int_{-5}^5\frac{1}{1+s^2}ds-T_n\Bigg|
+\]
+In the above equation, \(T_n\) denotes the approximation using the trapezoidal rule. Similarly, in the case of the \textit{Composite Simpson's Rule}, we have the following for \(|E|\).
+\[
+|E| = \Bigg|\int_{-5}^5\frac{1}{1+s^2}ds-S_n\Bigg|
+\]
+In the above equation, \(S_n\) denotes the approximation using the Simpson's rule. To find the corresponding values of \(n\) to reach the required absolute error, we use \texttt{Sympy} to find the necessary derivatives and maximums. Using \texttt{Sympy}, the following information was obtained for the trapezoidal error estimate.
+\[
+f''(x) = \frac{6x^2-2}{(1+x^2)^3} \mbox{, and }\max|f''(x)| \approx 2
+\]
+And for the Simpson's error estimate, the following values were found.
+\[
+f^{(4)}(x) = \frac{24 \left( \frac{16x^4}{(x^2 + 1)^2} - \frac{12x^2}{(x^2 + 1)} + 1 \right)}{(x^2 + 1)^3}\mbox{, and }\max|f^{(4)}(x) \approx 24
+\]
+With this information, we can find the value of \(n\) for the trapezoidal error estimate to be less than \(10^{-4}\) as shown below.
+\[
+\begin{split}
+    \frac{(b-a)^3}{12n^2}\max|f''(x)| &\leq 10^{-4} \\
+    \frac{(5-(-5))^3}{12n^2}2 &\leq 10^{-4} \\
+    \frac{2000}{12n^2} &\leq 10^{-4} \\
+    \frac{2000}{10^{-4}} &\leq 12n^2 \\
+    \frac{2000}{12*10^{-4}} &\leq n^2 \\
+    \sqrt{\frac{2000}{12*10^{-4}}} &\leq n \\
+    \sqrt{\frac{2000}{12*10^{-4}}} &\leq n \\
+    1291 &\leq n \\
+\end{split}
+\]
+Now finding the value of \(n\) for the Simpsons error estimate to be less than \(10^{-4}\) as shown below.
+\[
+\begin{split}
+    \frac{(b-a)^5}{180n^4}\max|f^{(4)}(x)| &\leq 10^{-4} \\
+    \frac{10^5}{180n^4}24 &\leq 10^{-4} \\
+    \frac{2400000}{180n^4} &\leq 10^{-4} \\
+    \frac{2400000}{180*10^{-4}} &\leq n^4 \\
+    \frac{2400000}{180*10^{-4}} &\leq n^4 \\
+    \left(\frac{2400000}{180*10^{-4}}\right)^{1/4} &\leq n \\
+    108 \leq n
+\end{split}
+\]
+
+\subsection{Comparisons}
+For this part, we are to use the values of \(n\) we found in the previous part to find the approximations \(T_n\) and \(S_n\). We are to then compare these values to the approximation using \texttt{Scipy} Quadrature function with the error requirements set to \(10^{-6}\) and \(10^{-4}\). The following values were found.
+
+\begin{table}
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+        Approximation Method & Value & Absolute Error \\
+    \hline
+        Composite Trapezoidal \(n=1291\) & 2.7468013859623697 & 1.4792766211968456e-07 \\
+    \hline
+        Composite Simpson's \(n=108\) & 2.7468015287482044 & 5.14182740829483e-09 \\
+    \hline
+        \texttt{Scipy.quad} \(err = 1e^{-6}\) & 2.7468015338900327 & -8.881784197001252e-16 \\
+    \hline
+        \texttt{Scipy.quad} \(err = 1e^{-4}\) & 2.746801533909586 & 1.9554136088117957e-11 \\
+    \hline
+    \end{tabular}
+    \caption{Approximation Values.}
+    \label{tab:Approximations}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%% QUESTION 2 %%%%%%%%%%%%%%%%%%%%
+\section{Question 2}
+For this question, we are asked to use the transformation \(t=x^{-1}\) to approximate the following integral in (\ref{Eqn_4}) using \textit{Composite Simpson's Rule} with 5 nodes.
+\begin{equation}
+    \label{Eqn_4}
+    \int_1^\infty\frac{\cos{(x)}}{x^3}dx
+\end{equation}
+Making the transformation \(t=x^{-1}\), we get the following integral as shown below.
+\[
+\begin{split}
+        \int_1^\infty\frac{\cos{(x)}}{x^3}dx &= \int_1^0\frac{\cos{(\frac{1}{t})}}{\left(\frac{1}{t}^3\right)}\left(-\frac{1}{t^2}\right)dt \\
+        &= \int_0^1\cos\left(1/t\right)tdt
+\end{split}
+\]
+To approximate using a \textit{Composite Simpson's Rule}, we will use the code that we developed for Question 1. In order to use Simpson's with five nodes, we will pass \(n=4\) into the function to denote four sub-intervals. It is also important to note that this particular integrand begins to fail for values close to \(0\). To remedy this, we can let \(\epsilon=1e^{-6}\) denote the lower bound of the interval. With this, the integral becomes the following.
+\[
+\int_\epsilon^1\cos\left(1/t\right)tdt
+\]
+Using the code from Question 1 with the mentioned modifications, the integral was approximated to be \(0.018773431522191356\).
+
+%%%%%%%%%%%%%%%%%%%% QUESTION 2 %%%%%%%%%%%%%%%%%%%%
+\section{Question 3}
+For this question, we are told to assume that the error in an integration formula is given by the following asymptotic expansion.
+\begin{equation}
+    \label{Eqn_5}
+    I-I_n = \frac{C_1}{n\sqrt{n}} + \frac{C_2}{n^2} + \frac{C_3}{n^3\sqrt{n}} + \frac{C_4}{n^3} + \dots
+\end{equation}
+We are then asked to generalize the \textit{Richardson Extrapolation Process} to obtain the estimate \(I\) has an error of \(\frac{1}{n\sqrt{n}}\). We are to assume that \(I_n\), \(I_{n/2}\), and \(I_{n/4}\) have been computed.
+From the given formula in (\ref{Eqn_5}), we can see that the dominant error term is as follows where \(E(n)\) is the error.
+\[
+E(n) \approx \frac{C_1}{n\sqrt{n}} = \frac{C_1}{n^{3/2}}
+\]
+To generalize the Richardson extrapolation process, we need to eliminate the leading error term \(\frac{1}{n^{3/2}}\), and subsequently the next dominant term \(\frac{1}{n^2}\). To do so, let \(I_n\), \(I_{n/2}\), and \(I_{n/4}\) be approximations with step sizes \(h\), \(h/2\), and \(h/4\), respectively. Also let \(p = \frac{3}{2}\), which corresponds to the exponent on the leading-order error term. The first level Richardson extrapolation removes the \(\mathcal{O}(1/n^{3/2})\) term as shown below.
+\[
+I^{(1)}_n = \frac{2^p I_{n/2} - I_n}{2^p - 1} = \frac{2^{3/2} I_{n/2} - I_n}{2^{3/2} - 1}
+\]
+We apply the same extrapolation to \(I_{n/2}\) and \(I_{n/4}\) to obtain the following.
+\[
+I^{(1)}_{n/2} = \frac{2^{3/2} I_{n/4} - I_{n/2}}{2^{3/2} - 1}
+\]
+This step cancels the leading-order \(\mathcal{O}(1/n^{3/2})\) error from both estimates. Now we can apply a second level of Richardson extrapolation to \(I^{(1)}_n\) and \(I^{(1)}_{n/2}\) to remove the next dominant error term, \(\mathcal{O}(1/n^2)\) as shown below.
+\[
+I^{(2)} = \frac{2^p I^{(1)}_{n/2} - I^{(1)}_n}{2^p - 1} = \frac{2^{3/2} I^{(1)}_{n/2} - I^{(1)}_n}{2^{3/2} - 1}
+\]
+The result \(I^{(2)}\) is an approximation to \(I\) with an improved asymptotic error of order \(\mathcal{O}\left(\frac{1}{n^2\sqrt{n}}\right)\).
+
+\end{document}
+
